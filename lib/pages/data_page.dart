@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../provider/dark_theme_provider.dart';
 
+
 class DataPage extends StatefulWidget {
   const DataPage({super.key});
 
@@ -19,8 +20,8 @@ class DataPage extends StatefulWidget {
 
 class _DataPageState extends State<DataPage> {
   List provinces = [];
-  List provincesSearch = [];
   List reference = [];
+  List provincesSearch = [];
   bool search = false;
   bool isData = false;
   TextEditingController textController = TextEditingController();

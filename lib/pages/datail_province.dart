@@ -1,13 +1,15 @@
 import 'dart:ui';
+import 'package:eny/pages/home_page.dart';
+import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
+import 'package:eny/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:weather/weather.dart';
 
-import '../widgets/notification.dart';
 
 class DetailProvince extends StatefulWidget {
   const DetailProvince({
@@ -27,46 +29,87 @@ class _DetailProvinceState extends State<DetailProvince> {
   bool isLocalisation = false;
   double latitude = 0.0;
   double longitude = 0.0;
+  double temperature = 0.0;
+  double windSpeed = 0.0;
+  late IconData icon ;
 
-  getProvinceLocation() async {
-    try {
-      List<Location> locations = await locationFromAddress(
-          "${widget.data['chef-lieu']} République démocratique du congo");
-      if (locations.isEmpty) {
-        // Impossible de trouver la province spécifiée
-        notification(
-            context, "Impossible de trouver la province spécifiée!", 50);
-        return;
-      }
-      Location location = locations.first;
-      setState(() {
-        latitude = location.latitude;
-        longitude = location.longitude;
+  late WeatherFactory weatherFactory;
+  Weather? currentWeather;
+
+  void fetchWeather() async {
+    Weather? weather ;
+    if(widget.data['chef-lieu'] == ''){
+      weather = await weatherFactory.currentWeatherByLocation(-4.0347884999999994, 21.75502799999998);
+    }else{
+     weather = await weatherFactory.currentWeatherByCityName("${widget.data['chef-lieu']}");
+    }
+
+    setState(() {
+      currentWeather = weather;
+      if(currentWeather != null){
         isLocalisation = true;
-      });
-      print(' Latitude: $latitude, Longitude: $longitude');
-    } catch (e) {
-      print(e.toString());
-      if (e.toString() ==
-          "PlatformException(IO_ERROR, A network error occurred trying to lookup the address ''., null, null)") {
-        notification(context, "Vérifier votre connexion internet !!!", 50);
+        latitude = currentWeather!.latitude!;
+        longitude = currentWeather!.longitude!;
+        temperature = currentWeather!.temperature!.celsius!;
+        windSpeed = currentWeather!.windSpeed!;
+        icon = _getWeatherIcon(currentWeather!.weatherIcon!);
       }
+    });
+  }
+  IconData _getWeatherIcon(String weatherCode) {
+    switch (weatherCode) {
+      case "01d":
+        return CupertinoIcons.sun_max_fill;
+      case "01n":
+        return CupertinoIcons.moon_stars_fill;
+      case "02d":
+        return CupertinoIcons.cloud_sun_fill;
+      case "02n":
+        return CupertinoIcons.cloud_moon_fill;
+      case "03d":
+      case "03n":
+        return CupertinoIcons.cloud_fill;
+      case "04d":
+      case "04n":
+        return CupertinoIcons.smoke_fill;
+      case "09d":
+      case "09n":
+        return CupertinoIcons.cloud_hail_fill ;
+      case "10d":
+        return CupertinoIcons.cloud_sun_rain_fill;
+      case "10n":
+        return CupertinoIcons.cloud_moon_rain_fill;
+      case "11d":
+      case "11n":
+        return CupertinoIcons.cloud_bolt_fill;
+      case "13d":
+      case "13n":
+        return CupertinoIcons.snow;
+      case "50d":
+      case "50n":
+        return Icons.blur_on;
+      default:
+        return Icons.error;
     }
   }
 
   @override
   void initState() {
-    getProvinceLocation();
-    debugPrint(widget.data['chef-lieu'].toString());
+    // Initialise le WeatherFactory avec votre clé d'API OpenWeatherMap
+    weatherFactory = WeatherFactory('d093aa4f50a6353d62b881d85a8bb237');
+    // Appelle la fonction pour obtenir les informations météorologiques
+    fetchWeather();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+
       child: Hero(
         tag: widget.tag,
-        child: CustomScrollView(slivers: [
+        child: CustomScrollView(
+            slivers: [
           SliverAppBar(
             systemOverlayStyle: const SystemUiOverlayStyle(
               statusBarBrightness: Brightness.dark,
@@ -79,33 +122,58 @@ class _DetailProvinceState extends State<DetailProvince> {
             forceElevated: true,
             flexibleSpace: FlexibleSpaceBar(
               background: isLocalisation
-                  ? FlutterMap(
-                      options: MapOptions(
-                        center: LatLng(latitude, longitude),
-                        // Centre de la carte
-                        zoom: widget.data['chef-lieu'] ==''? 5.0:10.0, // Niveau de zoom initial
-                      ),
-                      nonRotatedChildren: const [
-                        RichAttributionWidget(
-                          animationConfig: ScaleRAWA(),
-                          // Or `FadeRAWA` as is default
-                          attributions: [
-                            TextSourceAttribution(
-                              'OpenStreetMap contributors',
-                              //   onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
+                  ? Stack(
+                alignment: Alignment.topRight,
+                    children: [
+                      FlutterMap(
+                          options: MapOptions(
+                            center: LatLng(latitude, longitude),
+                            // Centre de la carte
+                            zoom: widget.data['chef-lieu'] ==''? 5.0:10.0, // Niveau de zoom initial
+                          ),
+                          nonRotatedChildren: const [
+                            RichAttributionWidget(
+                              animationConfig: ScaleRAWA(),
+                              // Or `FadeRAWA` as is default
+                              attributions: [
+                                TextSourceAttribution(
+                                  'OpenStreetMap contributors',
+                                  //   onTap: () => launchUrl(Uri.parse('https://openstreetmap.org/copyright')),
+                                ),
+                              ],
+                            ),
+                          ],
+                          children: [
+                            TileLayer(
+                              urlTemplate:
+                                  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                              subdomains: const ['a', 'b', 'c'],
+                              userAgentPackageName: 'com.example.eny',
                             ),
                           ],
                         ),
-                      ],
-                      children: [
-                        TileLayer(
-                          urlTemplate:
-                              'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                          subdomains: const ['a', 'b', 'c'],
-                          userAgentPackageName: 'com.example.eny',
-                        ),
-                      ],
-                    )
+
+                          Padding(
+                            padding: const EdgeInsets.only(top: 70, right: 30),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                AppTextLarge(text:"${temperature.toStringAsFixed(1)} ˚C", color: AppColors.activColor,size: 45,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    AppTextLarge(text: "${windSpeed.toStringAsFixed(1)} m/s", color: Colors.blueAccent,size: 26,),
+                                    sizedbox2,
+                                    const Icon(CupertinoIcons.wind_snow,color: Colors.blueAccent,size: 26,),
+                                  ],
+                                ),
+
+                                 Icon(icon,color: AppColors.activColor,size: 70,),
+                              ],
+                            ),
+                          ),
+                    ],
+                  )
                   : const Center(
                       child: Icon(
                         CupertinoIcons.arrow_2_circlepath,
@@ -135,13 +203,14 @@ class _DetailProvinceState extends State<DetailProvince> {
                 child: AppTextLarge(
                   text: widget.data['name'][0].toUpperCase() +
                       widget.data['name'].substring(1),
-                  color: Colors.black,
+                  color: Theme.of(context).hintColor,
                 ),
               ),
             ),
           ),
         ]),
       ),
+
     );
   }
 }
