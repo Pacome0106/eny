@@ -200,7 +200,7 @@ class _DataPageState extends State<DataPage> {
                     padding: const EdgeInsets.only(
                         top: 10, bottom: 10, left: 20, right: 20),
                     decoration: BoxDecoration(
-                      color: AppColors.mainColor,
+                      color: Theme.of(context).focusColor,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: const [
                         BoxShadow(
@@ -235,11 +235,11 @@ class _DataPageState extends State<DataPage> {
                                 ),
                                 AppTextLarge(
                                     text: "Superficie: ",
-                                    color: Colors.black,
+                                    color: Theme.of(context).cardColor,
                                     size: 16),
                                 AppTextLarge(
                                     text: "${provincesAll['superficial']} km2",
-                                    color: Colors.black,
+                                    color: Theme.of(context).hintColor,
                                     size: 16),
                               ],
                             ),
@@ -253,11 +253,11 @@ class _DataPageState extends State<DataPage> {
                                 ),
                                 AppTextLarge(
                                     text: "Population: ",
-                                    color: Colors.black,
+                                    color:Theme.of(context).cardColor,
                                     size: 16),
                                 AppTextLarge(
                                     text: "${provincesAll['population']} hab",
-                                    color: Colors.black,
+                                    color:Theme.of(context).hintColor,
                                     size: 16),
                               ],
                             ),
@@ -271,11 +271,11 @@ class _DataPageState extends State<DataPage> {
                                 ),
                                 AppTextLarge(
                                     text: "Densité: ",
-                                    color: Colors.black,
+                                    color: Theme.of(context).cardColor,
                                     size: 16),
                                 AppTextLarge(
                                     text: "${provincesAll['density']} hab/km3",
-                                    color: Colors.black,
+                                    color:   Theme.of(context).hintColor,
                                     size: 16),
                               ],
                             ),
@@ -289,12 +289,12 @@ class _DataPageState extends State<DataPage> {
                                 ),
                                 AppTextLarge(
                                     text: "Taux d'électrification: ",
-                                    color: Colors.black,
+                                    color: Theme.of(context).cardColor,
                                     size: 16),
                                 AppTextLarge(
                                   text:
                                       "${provincesAll['taux d\'electrification']} %",
-                                  color: Colors.black,
+                                  color: Theme.of(context).hintColor,
                                   size: 16,
                                 ),
                               ],
@@ -363,7 +363,7 @@ class _DataPageState extends State<DataPage> {
                     padding: const EdgeInsets.only(
                         top: 10, bottom: 10, left: 20, right: 20),
                     decoration: BoxDecoration(
-                      color: AppColors.mainColor,
+                      color: Theme.of(context).focusColor,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: const [
                         BoxShadow(
