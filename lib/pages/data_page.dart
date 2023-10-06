@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/pages/datail_province.dart';
+import 'package:eny/pages/home_page.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:eny/widgets/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,9 +18,9 @@ class DataPage extends StatefulWidget {
 }
 
 class _DataPageState extends State<DataPage> {
-  List provinces = [
-  ];
+  List provinces = [];
   List provincesSearch = [];
+  List reference = [];
   bool search = false;
   TextEditingController textController = TextEditingController();
 
@@ -40,9 +41,34 @@ class _DataPageState extends State<DataPage> {
       provinces;
     });
   }
+  getreference() async {
+    await FirebaseFirestore.instance
+        .collection("referenceValue")
+        .get()
+        .then((value) {
+
+      reference= value.docs;
+    });
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      reference;
+    });
+  }
+
+  calculs(double ref, double value){
+    double result = 0.0;
+    result = (value * 100)/ ref;
+    return result;
+
+  }
+
+
   @override
   void initState() {
-   getprovince();
+    getreference();
+    getprovince();
     super.initState();
   }
 
@@ -58,9 +84,7 @@ class _DataPageState extends State<DataPage> {
     bool isTheme = themeChange.darkTheme;
     return CustomScrollView(slivers: [
       CupertinoSliverNavigationBar(
-        backgroundColor: Theme
-            .of(context)
-            .scaffoldBackgroundColor,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         largeTitle: const Text(
           'Statistiques',
           style: TextStyle(
@@ -76,7 +100,7 @@ class _DataPageState extends State<DataPage> {
             isTheme = !isTheme;
             themeChange.darkTheme = isTheme;
             setState(
-                  () {
+              () {
                 isTheme;
               },
             );
@@ -109,200 +133,226 @@ class _DataPageState extends State<DataPage> {
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (context, index) =>
-              Scrollbar(
-                  child: Hero(
-                    tag: "$index",
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                DetailProvince(
-                                  tag: index.toString(),
-                                  name: !search
-                                      ? provinces[index]['name']
-                                      : provincesSearch[index]['name'],
-                                ),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        margin: const EdgeInsets.all(10),
-                        padding: const EdgeInsets.only(
-                            top: 10, bottom: 10, left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              blurRadius: 10,
-                              offset: Offset(0, 3),
+          (context, index) {
+            var provincesAll = !search ? provinces[index] : provincesSearch[index];
+
+           double superficies = calculs(double.parse(reference.first['superficial']) ,double.parse(provincesAll['superficial']));
+           double population = calculs(double.parse(reference.first['population']) ,double.parse(provincesAll['population']));
+
+           if (data[0]['category'] == 'Superficie') {
+             data[0]['sales'] = double.parse(superficies.toStringAsFixed(1));
+           }
+           if (data[1]['category'] == 'Population') {
+             data[1]['sales'] = double.parse(population.toStringAsFixed(1));
+           }
+           if (data[2]['category'] == 'Density') {
+             data[2]['sales'] = double.parse((double.parse(provincesAll['density'])/100).toStringAsFixed(1));
+           }
+           if (data[3]['category'] == 'Taux_electric') {
+             data[3]['sales'] = double.parse(provincesAll['taux d\'electrification']==''?'0':provincesAll['taux d\'electrification']);
+           }
+
+            return
+            Scrollbar(
+              child: Hero(
+            tag: "$index",
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailProvince(
+                      tag: index.toString(),
+                      data: provincesAll,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                alignment: Alignment.centerLeft,
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 10, left: 20, right: 20),
+                decoration: BoxDecoration(
+                  color: AppColors.mainColor,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 10,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                height: 160,
+                child: Row(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppTextLarge(
+                          text:
+                                 provincesAll['name'][0].toUpperCase() +
+                              provincesAll['name'].substring(1),
+
+                          size: 26,
+                          color: AppColors.activColor,
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              height: 18,
+                              width: 18,
+                              color: Colors.green,
+                            ),
+                            AppTextLarge(
+                                text: "Superficie: ",
+                                color: Colors.black,
+                                size: 16),
+                            AppTextLarge(
+                                text:
+                                    "${provincesAll['superficial']} km2",
+                                color: Colors.black,
+                                size: 16),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              height: 18,
+                              width: 18,
+                              color: Colors.lightBlue,
+                            ),
+                            AppTextLarge(
+                                text: "Population: ",
+                                color: Colors.black,
+                                size: 16),
+                            AppTextLarge(
+                                text:
+                                    "${provincesAll['population']} hab",
+                                color: Colors.black,
+                                size: 16),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              height: 18,
+                              width: 18,
+                              color: Colors.amber,
+                            ),
+                            AppTextLarge(
+                                text: "Densité: ",
+                                color: Colors.black,
+                                size: 16),
+                            AppTextLarge(
+                                text:
+                                    "${provincesAll['density']} hab/km3",
+                                color: Colors.black,
+                                size: 16),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(right: 5),
+                              height: 18,
+                              width: 18,
+                              color: Colors.deepOrange,
+                            ),
+                            AppTextLarge(
+                                text: "Taux d'électrification: ",
+                                color: Colors.black,
+                                size: 16),
+                            AppTextLarge(
+                              text:
+                                  "${provincesAll['taux d\'electrification']} %",
+                              color: Colors.black,
+                              size: 16,
                             ),
                           ],
                         ),
-                        height: 160,
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                AppTextLarge(
-                                  text: !search
-                                      ?provinces.isNotEmpty? provinces[index]['name']:''
-                                      : provincesSearch[index]['name'],
-                                  size: 26,
-                                  color: AppColors.activColor,
-                                ),
-                                const SizedBox(height: 5),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      height: 18,
-                                      width: 18,
-                                      color: Colors.green,
-                                    ),
-                                    AppTextLarge(
-                                        text: "Superficie: ",
-                                        color: Colors.black,
-                                        size: 16),
-                                    AppTextLarge(
-                                        text: " 1874 ",
-                                        color: Colors.black,
-                                        size: 16),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      height: 18,
-                                      width: 18,
-                                      color: Colors.lightBlue,
-                                    ),
-                                    AppTextLarge(
-                                        text: "Population: ",
-                                        color: Colors.black,
-                                        size: 16),
-                                    AppTextLarge(
-                                        text: "4379875",
-                                        color: Colors.black,
-                                        size: 16),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      height: 18,
-                                      width: 18,
-                                      color: Colors.amber,
-                                    ),
-                                    AppTextLarge(
-                                        text: "Densité: ",
-                                        color: Colors.black,
-                                        size: 16),
-                                    AppTextLarge(
-                                        text: "47497 ",
-                                        color: Colors.black,
-                                        size: 16),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      height: 18,
-                                      width: 18,
-                                      color: Colors.deepOrange,
-                                    ),
-                                    AppTextLarge(
-                                        text: "Taux d'électrification: ",
-                                        color: Colors.black,
-                                        size: 16),
-                                    AppTextLarge(
-                                        text: " 47839",
-                                        color: Colors.black,
-                                        size: 16),
-                                  ],
-                                ),
-                              ],
+                      ],
+                    ),
+                    Container(
+                      width: 90,
+                      height: 90,
+                      child: Chart(
+                        data: data,
+                        variables: {
+                          'category': Variable(
+                            accessor: (Map map) => map['category'] as String,
+                          ),
+                          'sales': Variable(
+                            accessor: (Map map) => map['sales'] as num,
+                            scale: LinearScale(min: 0),
+                          ),
+                        },
+                        marks: [
+                          IntervalMark(
+                            position: Varset('percent') / Varset('category')  ,
+                            color: ColorEncode(
+                              variable: 'category',
+                              values: types.values.toList(),
                             ),
-                            Container(
-                              alignment: Alignment.center,
-                              width: 80,
-                              height: 80,
-                              child: Chart(
-                                data: data,
-                                variables: {
-                                  'category': Variable(
-                                    accessor: (
-                                        Map map) => map['category'] as String,
-                                  ),
-                                  'sales': Variable(
-                                    accessor: (Map map) => map['sales'] as num,
-                                    scale: LinearScale(min: 0),
-                                  ),
-                                },
-                                marks: [
-                                  IntervalMark(
-                                    position: Varset('percent') /
-                                        Varset('category'),
-                                    color: ColorEncode(
-                                      variable: 'category',
-                                      values: types.values.toList(),
-                                    ),
-                                    modifiers: [StackModifier()],
-                                    shape: ShapeEncode(
-                                      value: RectShape(
-                                        labelPosition: 0.5,
-                                      ),
-                                    ),
-                                    label: LabelEncode(
-                                      encoder: (tuple) =>
-                                          Label(
-                                            tuple['sales'].toString(),
-                                            LabelStyle(
-                                                textStyle: TextStyle(
-                                                    color: Colors.black)),
-                                          ),
-                                    ),
-                                  ),
-                                ],
-                                transforms: [
-                                  Proportion(
-                                    variable: 'sales',
-                                    as: 'percent',
-                                  ),
-                                ],
-                                coord: PolarCoord(
-                                  transposed: true,
-                                  dimCount: 1,
-                                ),
+                            modifiers: [StackModifier()],
+                            shape: ShapeEncode(
+                              value:RectShape(
+                                labelPosition: 0.5,
+                                histogram: true,
+
+
+                              ),
+
+                            ),
+
+                            label: LabelEncode(
+                              encoder: (tuple) => Label(
+                                tuple['sales'].toString(),
+                                LabelStyle(
+                                    textStyle: TextStyle(color: Colors.black, fontSize: 10)),
                               ),
                             ),
-                          ],
+
+                          ),
+                        ],
+                        transforms: [
+                          Proportion(
+                            variable: 'sales',
+                            as: 'percent',
+                          ),
+                        ],
+                        coord: PolarCoord(
+                          transposed: true,
+                          dimCount: 1,
+
                         ),
                       ),
                     ),
-                  )),
+                  ],
+                ),
+              ),
+            ),
+          )
+          );
+  },
           childCount: !search ? provinces.length : provincesSearch.length,
         ),
       )
     ]);
   }
 
-  static const data = [
-    {'category': 'Superficie', 'sales': 10},
-    {'category': 'Population', 'sales': 20},
-    {'category': 'Density', 'sales': 36},
-    {'category': 'Taux_electric', 'sales': 56},
+  static List<Map<String, dynamic>> data = [
+    {'category': 'Superficie', 'sales': 0},
+    {'category': 'Population', 'sales': 0},
+    {'category': 'Density', 'sales': 0},
+    {'category': 'Taux_electric', 'sales': 0},
   ];
   final types = {
     'Type 1': Colors.green,

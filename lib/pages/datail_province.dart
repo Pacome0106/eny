@@ -13,11 +13,11 @@ class DetailProvince extends StatefulWidget {
   const DetailProvince({
     super.key,
     required this.tag,
-    required this.name,
+    required this.data,
   });
 
   final String tag;
-  final String name;
+  final data;
 
   @override
   State<DetailProvince> createState() => _DetailProvinceState();
@@ -29,19 +29,9 @@ class _DetailProvinceState extends State<DetailProvince> {
   double longitude = 0.0;
 
   getProvinceLocation() async {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   showDialog(
-    //       context: context,
-    //       builder: (context) {
-    //         return
-    //           Icon(CupertinoIcons.arrow_2_circlepath);
-    //       }
-    //   );
-    // });
-
     try {
       List<Location> locations = await locationFromAddress(
-          "${widget.name} République démocratique du congo");
+          "${widget.data['chef-lieu']} République démocratique du congo");
       if (locations.isEmpty) {
         // Impossible de trouver la province spécifiée
         notification(
@@ -67,6 +57,7 @@ class _DetailProvinceState extends State<DetailProvince> {
   @override
   void initState() {
     getProvinceLocation();
+    debugPrint(widget.data['chef-lieu'].toString());
     super.initState();
   }
 
@@ -92,7 +83,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                       options: MapOptions(
                         center: LatLng(latitude, longitude),
                         // Centre de la carte
-                        zoom: 10.0, // Niveau de zoom initial
+                        zoom: widget.data['chef-lieu'] ==''? 5.0:10.0, // Niveau de zoom initial
                       ),
                       nonRotatedChildren: const [
                         RichAttributionWidget(
@@ -111,7 +102,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                           urlTemplate:
                               'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                           subdomains: const ['a', 'b', 'c'],
-                          userAgentPackageName: 'com.example.app',
+                          userAgentPackageName: 'com.example.eny',
                         ),
                       ],
                     )
@@ -142,7 +133,8 @@ class _DetailProvinceState extends State<DetailProvince> {
                   ),
                 ),
                 child: AppTextLarge(
-                  text: widget.name,
+                  text: widget.data['name'][0].toUpperCase() +
+                      widget.data['name'].substring(1),
                   color: Colors.black,
                 ),
               ),
