@@ -53,6 +53,7 @@ class _DetailProvinceState extends State<DetailProvince> {
         temperature = currentWeather!.temperature!.celsius!;
         windSpeed = currentWeather!.windSpeed!;
         icon = _getWeatherIcon(currentWeather!.weatherIcon!);
+        print(currentWeather!.weatherIcon!);
       }
     });
   }
@@ -105,7 +106,6 @@ class _DetailProvinceState extends State<DetailProvince> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-
       child: Hero(
         tag: widget.tag,
         child: CustomScrollView(

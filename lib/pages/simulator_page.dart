@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/pages/home_page.dart';
 import 'package:eny/simulator/solar_similator.dart';
-import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +100,7 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                child: GestureDetector(
                                  onTap: () {
                                    print(x);
-                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>Simulator()));
+                                   Navigator.push(context, MaterialPageRoute(builder: (context)=>SolarPage()));
                                  },
                                  child: Container(
                                    alignment: Alignment.center,
