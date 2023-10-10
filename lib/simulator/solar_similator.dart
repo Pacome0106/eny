@@ -140,6 +140,7 @@ class _SolarPageState extends State<SolarPage> {
               color: AppColors.activColor,
             ),
           ),
+          style: TextStyle(color: Theme.of(context).hintColor),
           placeholder: "entrez les chiffres...",
           textAlign: TextAlign.center,
           keyboardType: TextInputType.number,
@@ -155,6 +156,14 @@ class _SolarPageState extends State<SolarPage> {
         slivers: [
           CupertinoSliverNavigationBar(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            leading: CupertinoButton(
+              padding: const EdgeInsets.all(0),
+              alignment: Alignment.centerLeft,
+              child:const Icon(CupertinoIcons.back, color: AppColors.activColor, size: 30),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
             largeTitle: const Text(
               'Energie Solaire PV',
               style: TextStyle(
@@ -525,7 +534,7 @@ class _SolarPageState extends State<SolarPage> {
                   child: Row(
                     children: [
                       AppText(
-                        text: "Rémunération carbone par an(\$)",
+                        text: "Rémunération carbone (\$/an)",
                         color: Theme.of(context).hintColor,
                         size: 16,
                       ),

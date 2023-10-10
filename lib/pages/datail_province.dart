@@ -114,6 +114,14 @@ class _DetailProvinceState extends State<DetailProvince> {
             systemOverlayStyle: const SystemUiOverlayStyle(
               statusBarBrightness: Brightness.dark,
             ),
+            leading: CupertinoButton(
+              padding: const EdgeInsets.all(0),
+              alignment: Alignment.centerLeft,
+              child:const Icon(CupertinoIcons.back, color: AppColors.activColor, size: 30),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
             expandedHeight: MediaQuery.of(context).size.height * 0.6,
             elevation: 0.0,
             pinned: true,
