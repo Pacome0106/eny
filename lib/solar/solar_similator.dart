@@ -74,6 +74,7 @@ class _SolarPageState extends State<SolarPage> {
   late double cti; // coût total investit
   late double rng; // recette nette generer
   late double tri; // temps de retour à l'investissement
+  late double crp; // coût de repayement qui depand du taux d'intérêt
   late double profitability; // rentabilité
   late double roi; // en francais c'est retour sur investissement
 
@@ -468,7 +469,7 @@ class _SolarPageState extends State<SolarPage> {
                         sizedbox,
                         textField("Durée de production de la centrale (an)",
                             times, 3),
-                        Padding(
+                        if (isFinish3)    Padding(
                           padding: const EdgeInsets.only(top: 30),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -683,6 +684,8 @@ class _SolarPageState extends State<SolarPage> {
                                 'value':ccAllPrice.ceil().toString(),
                                 'icon': CupertinoIcons.money_dollar_circle,
                               }],
+                            profitability: profitability/100,
+                            allprice:crp,
                           ),
                         ),
                       );
@@ -887,7 +890,6 @@ class _SolarPageState extends State<SolarPage> {
     double interestRate,
     double times,
   ) {
-    double crp = 0.0; // coût de repayement qui depand du taux d'intérêt
     double priceExpl = 0.0; // coût d'exploitation par an d'une centrale solaire
     int days = 365; //  nombre des jours par an
     double d =
@@ -939,7 +941,7 @@ class _SolarPageState extends State<SolarPage> {
       cti.ceil().toString(),
       crp.ceil().toString(),
       rng.ceil().toString(),
-      allTime2(tri * 8760),
+      tri >0.0?allTime2(tri * 8760):"Jamais",
       profitability.ceil().toString(),
       roi.ceil().toString(),
     ];

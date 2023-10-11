@@ -141,7 +141,8 @@ class _DetailProvinceState extends State<DetailProvince> {
             leading: CupertinoButton(
               padding: const EdgeInsets.all(0),
               alignment: Alignment.centerLeft,
-              child:const Icon(CupertinoIcons.back, color: AppColors.activColor, size: 30),
+              child: const Icon(CupertinoIcons.back,
+                  color: AppColors.activColor, size: 30),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -277,7 +278,7 @@ class _DetailProvinceState extends State<DetailProvince> {
           SliverList(
             delegate: SliverChildBuilderDelegate(
                 (context, int index) => Padding(
-                      padding: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         children: [
                           Container(
@@ -307,13 +308,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                       ),
                                     ],
                                   ),
-                                  Lign(
-                                    indent: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    endIndent:
-                                        MediaQuery.of(context).size.width *
-                                            0.15,
-                                  ),
+                                  const Lign(indent: 0, endIndent: 0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -333,13 +328,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                       ),
                                     ],
                                   ),
-                                  Lign(
-                                    indent: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    endIndent:
-                                        MediaQuery.of(context).size.width *
-                                            0.15,
-                                  ),
+                                  const Lign(indent: 0, endIndent: 0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -367,11 +356,13 @@ class _DetailProvinceState extends State<DetailProvince> {
                             ),
                           ),
                           sizedbox,
+                          sizedbox,
                           AppText(
                             text:
                                 'courbe esthimatif de la population en fonction des annees',
                             color: Theme.of(context).unselectedWidgetColor,
                           ),
+                          sizedbox,
                           Center(
                             child: SfCartesianChart(
                               primaryXAxis: CategoryAxis(),
@@ -426,13 +417,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                       ),
                                     ],
                                   ),
-                                  Lign(
-                                    indent: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    endIndent:
-                                        MediaQuery.of(context).size.width *
-                                            0.15,
-                                  ),
+                                  const Lign(indent: 0, endIndent: 0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -452,13 +437,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                       ),
                                     ],
                                   ),
-                                  Lign(
-                                    indent: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    endIndent:
-                                        MediaQuery.of(context).size.width *
-                                            0.15,
-                                  ),
+                                  const Lign(indent: 0, endIndent: 0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -486,6 +465,13 @@ class _DetailProvinceState extends State<DetailProvince> {
                               ),
                             ),
                           ),
+                          sizedbox,
+                          sizedbox,
+                          AppText(
+                            text: 'courbe des puissances',
+                            color: Theme.of(context).unselectedWidgetColor,
+                          ),
+                          sizedbox,
                           Center(
                             child: SizedBox(
                               height: 250.0,
@@ -591,13 +577,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                       ),
                                     ],
                                   ),
-                                  Lign(
-                                    indent: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    endIndent:
-                                        MediaQuery.of(context).size.width *
-                                            0.15,
-                                  ),
+                                  const Lign(indent: 0, endIndent: 0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -649,13 +629,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                       ),
                                     ],
                                   ),
-                                  Lign(
-                                    indent: MediaQuery.of(context).size.width *
-                                        0.15,
-                                    endIndent:
-                                        MediaQuery.of(context).size.width *
-                                            0.15,
-                                  ),
+                                  const Lign(indent: 0, endIndent: 0),
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -693,9 +667,9 @@ class _DetailProvinceState extends State<DetailProvince> {
     );
   }
 
-/* 
+/*
 cette fonction calcule la population future en utilisant la formule de taux de croissance,
- crée des objets SalesData avec l'année et la population future, 
+ crée des objets SalesData avec l'année et la population future,
  et les ajoute à une liste. La liste complète est ensuite retournée en tant que résultat.
 */
   List<SalesData> generateChartData() {
@@ -727,6 +701,7 @@ la fonction addSpaces() utilise une expression régulière pour rechercher des g
 
 class SalesData {
   SalesData(this.year, this.sales);
+
   final int year;
   final int sales;
 }

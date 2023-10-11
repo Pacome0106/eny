@@ -1,7 +1,10 @@
+import 'dart:math' as math;
+import 'dart:math';
 import 'package:eny/pages/home_page.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../widgets/app_text_large.dart';
 import '../widgets/colors.dart';
@@ -13,12 +16,16 @@ class Result extends StatefulWidget {
     required this.resultDivice,
     required this.resultBudget,
     required this.resultEnv,
+    required this.allprice,
+    required this.profitability,
   });
 
   final List resultEnergy;
   final List resultDivice;
   final List resultBudget;
   final List resultEnv;
+  final double allprice;
+  final double profitability;
 
   @override
   State<Result> createState() => _ResultState();
@@ -32,64 +39,62 @@ class _ResultState extends State<Result> {
   List tableRows4 = [];
 
   table(List tables) {
-    return
-      Table(
-        key: GlobalKey(),
-        border: TableBorder.all(width: 0.3),
-        columnWidths: const {
-          0: FixedColumnWidth(40.0),
-          1: FixedColumnWidth(200.0),
-          2: FixedColumnWidth(80.0),
-        },
-        children: [
-          TableRow(
-            decoration: const BoxDecoration(
-              color: Color(0xFFB8DDFC),
-            ),
-            children: [
-              TableCell(
-                child: Center(
-                  child: AppTextLarge(
-                    text: 'N°',
-                    color: Colors.black,
-                    size: 16,
-                  ),
-                ),
-              ),
-              TableCell(
-                child: Center(
-                  child: AppTextLarge(
-                    text: 'Désignation',
-                    color: Colors.black,
-                    size: 16,
-                  ),
-                ),
-              ),
-              TableCell(
-                child: Center(
-                  child: AppTextLarge(
-                    text: 'Valeurs',
-                    color: Colors.black,
-                    size: 16,
-                  ),
-                ),
-              ),
-              TableCell(
-                child: Center(
-                  child: AppTextLarge(
-                    text: 'Symbole',
-                    color: Colors.black,
-                    size: 16,
-                  ),
-                ),
-              ),
-            ],
+    return Table(
+      key: GlobalKey(),
+      border: TableBorder.all(width: 0.3),
+      columnWidths: const {
+        0: FixedColumnWidth(40.0),
+        1: FixedColumnWidth(200.0),
+        2: FixedColumnWidth(80.0),
+      },
+      children: [
+        TableRow(
+          decoration: const BoxDecoration(
+            color: Color(0xFFB8DDFC),
           ),
-          // Existing rows
-          for (var row in tables) tableau(row)
-          ,
-        ],
-      );
+          children: [
+            TableCell(
+              child: Center(
+                child: AppTextLarge(
+                  text: 'N°',
+                  color: Colors.black,
+                  size: 16,
+                ),
+              ),
+            ),
+            TableCell(
+              child: Center(
+                child: AppTextLarge(
+                  text: 'Désignation',
+                  color: Colors.black,
+                  size: 16,
+                ),
+              ),
+            ),
+            TableCell(
+              child: Center(
+                child: AppTextLarge(
+                  text: 'Valeurs',
+                  color: Colors.black,
+                  size: 16,
+                ),
+              ),
+            ),
+            TableCell(
+              child: Center(
+                child: AppTextLarge(
+                  text: 'Symbole',
+                  color: Colors.black,
+                  size: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+        // Existing rows
+        for (var row in tables) tableau(row),
+      ],
+    );
   }
 
   // fonction du widget pour gener le tableau
@@ -112,14 +117,15 @@ class _ResultState extends State<Result> {
       TableCell(
         child: Padding(
           padding: padding,
-          child: AppText(text: row['Designation'], color: Colors.black,size: 16),
+          child:
+              AppText(text: row['Designation'], color: Colors.black, size: 16),
         ),
       ),
       TableCell(
         child: Center(
           child: Container(
             padding: padding,
-            child: AppText(text: row['Value'], color: Colors.black,size: 16),
+            child: AppText(text: row['Value'], color: Colors.black, size: 16),
           ),
         ),
       ),
@@ -151,13 +157,12 @@ class _ResultState extends State<Result> {
   }
 
   Widget build(BuildContext context) {
+    List<SalesData> chartData = generateChartData();
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           CupertinoSliverNavigationBar(
-            backgroundColor: Theme
-                .of(context)
-                .scaffoldBackgroundColor,
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             leading: CupertinoButton(
               padding: const EdgeInsets.all(0),
               alignment: Alignment.centerLeft,
@@ -190,24 +195,19 @@ class _ResultState extends State<Result> {
                         padding: const EdgeInsets.only(left: 10),
                         child: AppTextLarge(
                           text: "Paramétres Energetiques",
-                          color: Theme
-                              .of(context)
-                              .hintColor,
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                       ),
                       sizedbox,
                       table(tableRows),
-
                       sizedbox,
                       sizedbox,
                       Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: AppTextLarge(
                           text: "Materiels Energetiques",
-                          color: Theme
-                              .of(context)
-                              .hintColor,
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                       ),
@@ -219,9 +219,7 @@ class _ResultState extends State<Result> {
                         padding: const EdgeInsets.only(left: 10),
                         child: AppTextLarge(
                           text: "Budget",
-                          color: Theme
-                              .of(context)
-                              .hintColor,
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                       ),
@@ -233,15 +231,46 @@ class _ResultState extends State<Result> {
                         padding: const EdgeInsets.only(left: 10),
                         child: AppTextLarge(
                           text: "Environnement",
-                          color: Theme
-                              .of(context)
-                              .hintColor,
+                          color: Theme.of(context).hintColor,
                           size: 20,
                         ),
                       ),
                       sizedbox,
                       table(tableRows4),
                     ],
+                  ),
+                ),
+                sizedbox,
+                sizedbox,
+                AppText(
+                  text:
+                      'courbe esthimatif de la population en fonction des annees',
+                  color: Theme.of(context).unselectedWidgetColor,
+                ),
+                sizedbox,
+                Center(
+                  child: SfCartesianChart(
+                    primaryXAxis: CategoryAxis(),
+                    series: <ChartSeries>[
+                      // Renders line chart
+                      LineSeries<SalesData, String>(
+                        dataSource: chartData,
+                        xValueMapper: (SalesData sales, _) =>
+                            sales.year.toString(),
+                        yValueMapper: (SalesData sales, _) => sales.sales,
+                        dataLabelSettings: const DataLabelSettings(
+                          isVisible: true,
+                          labelPosition: ChartDataLabelPosition.outside,
+                          textStyle: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      )
+                    ],
+                    onDataLabelRender: (DataLabelRenderArgs args) {
+                      args.text = addSpaces(args.text);
+                    },
                   ),
                 ),
               ],
@@ -252,14 +281,16 @@ class _ResultState extends State<Result> {
     );
   }
 
-  void generateTableRows(List value1,
-      List value2,
-      List value3,
-      List value4,
-      int rowCount1,
-      int rowCount2,
-      int rowCount3,
-      int rowCount4,) {
+  void generateTableRows(
+    List value1,
+    List value2,
+    List value3,
+    List value4,
+    int rowCount1,
+    int rowCount2,
+    int rowCount3,
+    int rowCount4,
+  ) {
     for (int i = 0; i < rowCount1; i++) {
       tableRows.add({
         'Number': (i + 1).toString(),
@@ -294,4 +325,37 @@ class _ResultState extends State<Result> {
       });
     }
   }
+
+  String addSpaces(String value) {
+    return value.replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match match) => '${match[1]} ',
+    );
+  }
+
+  List<SalesData> generateChartData() {
+    List<SalesData> chartData = [];
+    double paiementTotal = 0;
+    // Créer une liste de nombres aléatoires
+    List time = [1,1.5,2,3,3.8,5,6.4,7,8,11,15];
+    for (int i = 0; i < time.length; i++) {
+      int year = time[i].round();
+      // Calculer le paiement total
+
+        paiementTotal = (widget.allprice * widget.profitability) *time[i] ;
+      print(paiementTotal.ceil());
+
+      chartData.add(SalesData(year, paiementTotal.round()));
+      // print(paiementTotal);
+    }
+
+    return chartData;
+  }
+}
+
+class SalesData {
+  SalesData(this.year, this.sales);
+
+  final int year;
+  final int sales;
 }
