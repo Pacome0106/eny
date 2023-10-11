@@ -233,13 +233,14 @@ class _DataPageState extends State<DataPage> {
                                   height: 18,
                                   width: 18,
                                   color: Colors.green,
+                                 
                                 ),
                                 AppTextLarge(
                                     text: "Superficie: ",
                                     color: Theme.of(context).cardColor,
                                     size: 16),
                                 AppTextLarge(
-                                    text: "${provincesAll['superficial']} km2",
+                                    text: addSpaces("${provincesAll['superficial']} km2",),
                                     color: Theme.of(context).hintColor,
                                     size: 16),
                               ],
@@ -257,7 +258,7 @@ class _DataPageState extends State<DataPage> {
                                     color:Theme.of(context).cardColor,
                                     size: 16),
                                 AppTextLarge(
-                                    text: "${provincesAll['population']} hab",
+                                    text: addSpaces("${provincesAll['population']} hab",),
                                     color:Theme.of(context).hintColor,
                                     size: 16),
                               ],
@@ -302,55 +303,61 @@ class _DataPageState extends State<DataPage> {
                             ),
                           ],
                         ),
-                        SizedBox(
-                          width: 90,
-                          height: 90,
-                          child: Chart(
-                            data: data,
-                            variables: {
-                              'category': Variable(
-                                accessor: (Map map) =>
-                                    map['category'] as String,
-                              ),
-                              'sales': Variable(
-                                accessor: (Map map) => map['sales'] as num,
-                                scale: LinearScale(min: 0),
-                              ),
-                            },
-                            marks: [
-                              IntervalMark(
-                                position:
-                                    Varset('percent') / Varset('category'),
-                                color: ColorEncode(
-                                  variable: 'category',
-                                  values: types.values.toList(),
+                        Flexible(
+                          child: SizedBox(
+                            width: 90,
+                            height: 90,
+                            child: Chart(
+                              data: data,
+                              variables: {
+                                'category': Variable(
+                                  accessor: (Map map) =>
+                                      map['category'] as String,
                                 ),
-                                modifiers: [StackModifier()],
-                                shape: ShapeEncode(
-                                  value: RectShape(
-                                    labelPosition: 0.5,
-                                    histogram: true,
+                                'sales': Variable(
+                                  accessor: (Map map) => map['sales'] as num,
+                                  scale: LinearScale(min: 0),
+                                ),
+                              },
+                              marks: [
+                                IntervalMark(
+                                  position:
+                                      Varset('percent') / Varset('category'),
+                                  color: ColorEncode(
+                                    variable: 'category',
+                                    values: types.values.toList(),
                                   ),
-                                ),
-                                label: LabelEncode(
-                                  encoder: (tuple) => Label(
-                                    tuple['sales'].toString(),
-                                    LabelStyle(
-                                        textStyle: const TextStyle(
-                                            color: Colors.black, fontSize: 10)),
+                                  modifiers: [StackModifier()],
+                                  shape: ShapeEncode(
+                                    value: RectShape(
+                                      labelPosition: 0.5,
+                                      histogram: true,
+                                     
+                                    ),
+                                    
                                   ),
+                                  label: LabelEncode(
+                                    encoder: (tuple) => Label(
+                                      tuple['sales'].toString(),
+                                      LabelStyle(
+                                          textStyle: const TextStyle(
+                                              color: Colors.black, fontSize: 10)),
+                                    ),
+                                  ),
+                                  
                                 ),
+
+                              ],
+                              transforms: [
+                                Proportion(
+                                  variable: 'sales',
+                                  as: 'percent',
+                                ),
+                              ],
+                              coord: PolarCoord(
+                                transposed: true,
+                                dimCount: 1,
                               ),
-                            ],
-                            transforms: [
-                              Proportion(
-                                variable: 'sales',
-                                as: 'percent',
-                              ),
-                            ],
-                            coord: PolarCoord(
-                              transposed: true,
-                              dimCount: 1,
                             ),
                           ),
                         ),
@@ -427,9 +434,11 @@ class _DataPageState extends State<DataPage> {
                             ),
                           ],
                         ),
-                        const CircleAvatar(
-                          backgroundColor: Colors.grey,
-                          radius: 40,
+                        const Flexible(
+                          child:  CircleAvatar(
+                            backgroundColor: Colors.grey,
+                            radius: 40,
+                          ),
                         )
                       ],
                     ),
@@ -440,6 +449,11 @@ class _DataPageState extends State<DataPage> {
         ),
     ]);
   }
-
+String addSpaces(String value) {
+    return value.replaceAllMapped(
+      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+      (Match match) => '${match[1]} ',
+    );
+  }
 
 }
