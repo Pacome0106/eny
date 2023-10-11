@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/pages/home_page.dart';
-import 'package:eny/simulator/solar_similator.dart';
+import 'package:eny/solar/solar_similator.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,4 +1,5 @@
 import 'package:eny/pages/home_page.dart';
+import 'package:eny/solar/result_page.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:eny/widgets/card_result.dart';
@@ -159,7 +160,8 @@ class _SolarPageState extends State<SolarPage> {
             leading: CupertinoButton(
               padding: const EdgeInsets.all(0),
               alignment: Alignment.centerLeft,
-              child:const Icon(CupertinoIcons.back, color: AppColors.activColor, size: 30),
+              child: const Icon(CupertinoIcons.back,
+                  color: AppColors.activColor, size: 30),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -180,7 +182,7 @@ class _SolarPageState extends State<SolarPage> {
               [
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-                  child: textField("Puissance journalière (W)", power, 1),
+                  child: textField("Puissance installation (W)", power, 1),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
@@ -208,7 +210,7 @@ class _SolarPageState extends State<SolarPage> {
                     child: Row(
                       children: [
                         AppText(
-                          text: "Temps de charge (h)",
+                          text: "Temps de charge ",
                           color: Theme.of(context).hintColor,
                           size: 16,
                         ),
@@ -224,7 +226,7 @@ class _SolarPageState extends State<SolarPage> {
                             ),
                             child: Center(
                               child: AppTextLarge(
-                                text: allTime(chargingTime) ,
+                                text: allTime(chargingTime),
                                 color: AppColors.activColor,
                                 size: 20, // new
                               ),
@@ -650,7 +652,40 @@ class _SolarPageState extends State<SolarPage> {
                 if (isFinish3)
                   GestureDetector(
                     onTap: () {
-                      // appel de la fonction simulateur
+                      // appel de la fonction result du simulateur
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Result(
+                            resultEnergy: firstResult + [{
+                              'name': 'Temps de charge',
+                              'value':allTime(chargingTime),
+                              'icon': CupertinoIcons.time,
+                            }],
+                            resultDivice: pannelResult+battResult+ [{
+                              'name': "Nombres d'onduleur en parallèle",
+                              'value':numberOnd.ceil().toString(),
+                              'icon': CupertinoIcons.waveform_circle,
+                            }],
+                            resultBudget: budgetResult,
+                            resultEnv: [{
+                              'name': "Crédits carbone produits par an",
+                              'value':cc.ceil().toString(),
+                              'icon': CupertinoIcons.tree,
+                            },
+                              {
+                                'name': "Rémunération carbone (\$/an)",
+                                'value':ccPrice.ceil().toString(),
+                                'icon': CupertinoIcons.money_dollar_circle,
+                              },
+                              {
+                                'name': "Rémunération carbone total (\$)",
+                                'value':ccAllPrice.ceil().toString(),
+                                'icon': CupertinoIcons.money_dollar_circle,
+                              }],
+                          ),
+                        ),
+                      );
                     },
                     child: button(context, 'Gener tout le resulatat',
                         CupertinoIcons.circle_grid_hex_fill),
@@ -811,9 +846,9 @@ class _SolarPageState extends State<SolarPage> {
       ];
     }
     List icons1 = [
-      Icons.panorama_vertical_select_rounded,
-      CupertinoIcons.pano_fill,
-      Icons.panorama_vertical_select_rounded,
+      Icons.solar_power,
+      Icons.solar_power,
+      Icons.solar_power,
     ];
     List icons2 = [
       Icons.battery_full,
@@ -912,7 +947,7 @@ class _SolarPageState extends State<SolarPage> {
       CupertinoIcons.money_dollar_circle,
       CupertinoIcons.money_dollar_circle,
       CupertinoIcons.money_dollar_circle,
-      CupertinoIcons.today,
+      CupertinoIcons.calendar,
       Icons.percent,
       Icons.percent,
     ];
