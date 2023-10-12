@@ -31,7 +31,7 @@ class _SplashState extends State<Splash> {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     bool isTheme = themeChange.darkTheme;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Column(

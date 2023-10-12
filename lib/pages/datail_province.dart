@@ -130,8 +130,8 @@ class _DetailProvinceState extends State<DetailProvince> {
         double.parse(widget.data['puissance disponible']),
       ),
     ];
-    return CupertinoPageScaffold(
-      child: Hero(
+    return Scaffold(
+      body: Hero(
         tag: widget.tag,
         child: CustomScrollView(slivers: [
           SliverAppBar(
@@ -360,12 +360,14 @@ class _DetailProvinceState extends State<DetailProvince> {
                           AppText(
                             text:
                                 'courbe esthimatif de la population en fonction des annees',
-                            color: Theme.of(context).unselectedWidgetColor,
+                            color: Theme.of(context).hintColor,
                           ),
                           sizedbox,
                           Center(
                             child: SfCartesianChart(
-                              primaryXAxis: CategoryAxis(),
+                              primaryXAxis: CategoryAxis(
+                                title: AxisTitle(text:"Années" ),
+                              ),
                               series: <ChartSeries>[
                                 // Renders line chart
                                 LineSeries<SalesData, String>(
