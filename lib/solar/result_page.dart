@@ -44,7 +44,6 @@ class _ResultState extends State<Result> {
   List tableRows4 = [];
 
   table(List tables) {
-    print(widget.enter);
     return Table(
       key: GlobalKey(),
       border: TableBorder.all(
