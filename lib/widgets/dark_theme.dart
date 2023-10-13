@@ -11,7 +11,7 @@ class Styles {
       dialogBackgroundColor:
           isDarkTheme ? AppColors.activColor : AppColors.mainColor,
       scaffoldBackgroundColor:
-          isDarkTheme ? const Color(0xFF010013) : AppColors.mainColor,
+          isDarkTheme ? AppColors.bigTextColor : AppColors.mainColor,
       colorSchemeSeed: AppColors.activColor,
       backgroundColor:
           isDarkTheme ? const Color(0xFF010013) : AppColors.mainColor,
@@ -21,9 +21,9 @@ class Styles {
       hintColor: isDarkTheme ? AppColors.mainColor : AppColors.bigTextColor,
       cardColor: isDarkTheme ? const Color(0x79F1F0E9) : AppColors.textColor2,
       hoverColor:
-          isDarkTheme ? const Color(0xFF808995) : AppColors.simpleFondColor2,
+          isDarkTheme ? const Color(0xFF70726B) : AppColors.simpleFondColor2,
       focusColor:
-          isDarkTheme ? const Color(0xFF404D65) : AppColors.simpleFondColor,
+          isDarkTheme ?AppColors.mainTextColor : AppColors.simpleFondColor,
       dividerColor: isDarkTheme ? const Color(0xFF808995) : Colors.white,
       bottomAppBarColor:
           isDarkTheme ? AppColors.activColor : AppColors.mainTextColor,

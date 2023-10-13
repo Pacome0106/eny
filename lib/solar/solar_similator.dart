@@ -3,6 +3,7 @@ import 'package:eny/solar/result_page.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:eny/widgets/card_result.dart';
+import 'package:eny/widgets/notification.dart';
 import 'package:eny/widgets/time.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,7 @@ class _SolarPageState extends State<SolarPage> {
 
   List budgetResult = [];
   bool isFinish3 = false;
+  bool isBudget = false;
   bool isSelected = false;
 
   textField(String name, TextEditingController controler, int etape) {
@@ -391,104 +393,157 @@ class _SolarPageState extends State<SolarPage> {
                 [
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 20, right: 20, top: 30, bottom: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                        left: 20, right: 20, top: 20, bottom: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        AppTextLarge(
-                          text: "Calculs budgétaire",
+                        AppText(
+                          text: "Voulez-vous faire des calculs budgétaire ?",
                           color: Theme.of(context).hintColor,
-                          size: 24,
+                          size: 16,
                         ),
-                        sizedbox,
-                        sizedbox,
-                        textField("Prix d'un panneaux (\$)", pricePannel, 3),
-                        if (!widget.isConnected) sizedbox,
-                        if (!widget.isConnected)
-                          textField("Prix d'une batterie (\$)", priceBatt, 3),
-                        sizedbox,
-                        textField("Prix d'un onduleur (\$)", priceOnd, 3),
-                        sizedbox,
-                        textField(
-                            "Autres frais d'installation (\$)", otherPrice, 3),
-                        sizedbox,
-                        textField("Prix de l'énergie (\$/kWh)", priceEnergy, 3),
-                        sizedbox,
-                        sizedbox,
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            AppText(
-                              text:
-                                  "L'argent investi est avec ou sans intérêt ?",
-                              color: Theme.of(context).hintColor,
-                              size: 16,
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              isBudget = !isBudget;
+                              isFinish3 = false;
+                              budgetResult = [];
+                            });
+                          },
+                          child: Container(
+                            width: 35,
+                            height: 35,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                width: 2,
+                                color: isBudget
+                                    ? AppColors.activColor
+                                    : Colors.grey,
+                              ),
                             ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isSelected = !isSelected;
-                                  isFinish3 = false;
-                                  budgetResult = [];
-                                });
-                              },
-                              child: Container(
-                                width: 35,
-                                height: 35,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    width: 2,
-                                    color: isSelected
-                                        ? AppColors.activColor
-                                        : Colors.grey,
-                                  ),
-                                ),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isSelected
-                                        ? AppColors.activColor
-                                        : Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                    border: Border.all(
-                                      width: 6,
-                                      color: Theme.of(context)
-                                          .scaffoldBackgroundColor,
-                                    ),
-                                  ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: isBudget
+                                    ? AppColors.activColor
+                                    : Theme.of(context).scaffoldBackgroundColor,
+                                border: Border.all(
+                                  width: 6,
+                                  color:
+                                      Theme.of(context).scaffoldBackgroundColor,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
-                        if (isSelected) sizedbox,
-                        if (isSelected)
-                          textField("Taux d'intérêt de l'argent investi (%)",
-                              interestRate, 3),
-                        sizedbox,
-                        textField("Durée de production de la centrale (an)",
-                            times, 3),
-                        if (isFinish3)    Padding(
-                          padding: const EdgeInsets.only(top: 30),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppTextLarge(
-                                text: "Resultats budgétaire ",
-                                color: Theme.of(context).hintColor,
-                                size: 24,
-                              ),
-                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
+                  if (isBudget)
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 30, bottom: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppTextLarge(
+                            text: "Calculs budgétaire",
+                            color: Theme.of(context).hintColor,
+                            size: 24,
+                          ),
+                          sizedbox,
+                          sizedbox,
+                          textField("Prix d'un panneaux (\$)", pricePannel, 3),
+                          if (!widget.isConnected) sizedbox,
+                          if (!widget.isConnected)
+                            textField("Prix d'une batterie (\$)", priceBatt, 3),
+                          sizedbox,
+                          textField("Prix d'un onduleur (\$)", priceOnd, 3),
+                          sizedbox,
+                          textField("Autres frais d'installation (\$)",
+                              otherPrice, 3),
+                          sizedbox,
+                          textField(
+                              "Prix de l'énergie (\$/kWh)", priceEnergy, 3),
+                          sizedbox,
+                          sizedbox,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              AppText(
+                                text:
+                                    "L'argent investi est avec ou sans intérêt ?",
+                                color: Theme.of(context).hintColor,
+                                size: 16,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isSelected = !isSelected;
+                                    isFinish3 = false;
+                                    budgetResult = [];
+                                  });
+                                },
+                                child: Container(
+                                  width: 35,
+                                  height: 35,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      width: 2,
+                                      color: isSelected
+                                          ? AppColors.activColor
+                                          : Colors.grey,
+                                    ),
+                                  ),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: isSelected
+                                          ? AppColors.activColor
+                                          : Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                      border: Border.all(
+                                        width: 6,
+                                        color: Theme.of(context)
+                                            .scaffoldBackgroundColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (isSelected) sizedbox,
+                          if (isSelected)
+                            textField("Taux d'intérêt de l'argent investi (%)",
+                                interestRate, 3),
+                          sizedbox,
+                          textField("Durée de production de la centrale (an)",
+                              times, 3),
+                          if (isFinish3)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 30),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppTextLarge(
+                                    text: "Resultats budgétaire ",
+                                    color: Theme.of(context).hintColor,
+                                    size: 24,
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),
-          if (isFinish3) cardResult(budgetResult, budgetResult.length),
+          if (isFinish3 && isBudget)
+            cardResult(budgetResult, budgetResult.length),
           if (isFinish3)
             SliverList(
               delegate: SliverChildListDelegate([
@@ -604,12 +659,33 @@ class _SolarPageState extends State<SolarPage> {
                   GestureDetector(
                     onTap: () {
                       // appel de la fonction de calcul
-                      calcul01(
-                        double.parse(power.text),
-                        double.parse(hour.text),
-                        widget.isConnected ? 1 : int.parse(autonomy.text),
-                        widget.irradiation,
-                      );
+                      if (widget.isConnected) {
+                        if (power.text != '' && hour.text != '') {
+                          calcul01(
+                            double.parse(power.text),
+                            double.parse(hour.text),
+                            widget.isConnected ? 1 : int.parse(autonomy.text),
+                            widget.irradiation,
+                          );
+                        } else {
+                          notification(context,
+                              "Veillez completé toute les cases !!!", 50);
+                        }
+                      } else {
+                        if (power.text != '' &&
+                            hour.text != '' &&
+                            autonomy.text != "") {
+                          calcul01(
+                            double.parse(power.text),
+                            double.parse(hour.text),
+                            widget.isConnected ? 1 : int.parse(autonomy.text),
+                            widget.irradiation,
+                          );
+                        } else {
+                          notification(context,
+                              "Veillez completé toute les cases !!!", 50);
+                        }
+                      }
                     },
                     child: button(context, 'Commencer',
                         CupertinoIcons.circle_grid_hex_fill),
@@ -618,17 +694,53 @@ class _SolarPageState extends State<SolarPage> {
                   GestureDetector(
                     onTap: () {
                       // appel de la fonction de calcul
-                      calcul02(
-                        widget.isConnected,
-                        double.parse(pannelVoltage.text),
-                        double.parse(pannelPower.text),
-                        !widget.isConnected ? double.parse(battCap.text) : 0.0,
-                        !widget.isConnected
-                            ? double.parse(battVoltage.text)
-                            : 0.0,
-                        double.parse(ondPower.text),
-                        double.parse(ondVoltage.text),
-                      );
+                      if (widget.isConnected) {
+                        if (pannelVoltage.text != "" &&
+                            pannelPower.text != "" &&
+                            ondPower.text != "" &&
+                            ondVoltage.text != "") {
+                          calcul02(
+                            widget.isConnected,
+                            double.parse(pannelVoltage.text),
+                            double.parse(pannelPower.text),
+                            !widget.isConnected
+                                ? double.parse(battCap.text)
+                                : 0.0,
+                            !widget.isConnected
+                                ? double.parse(battVoltage.text)
+                                : 0.0,
+                            double.parse(ondPower.text),
+                            double.parse(ondVoltage.text),
+                          );
+                        } else {
+                          notification(context,
+                              "Veillez completé toute les cases !!!", 50);
+                        }
+                      } else {
+                        if (pannelVoltage.text != "" &&
+                            pannelPower.text != "" &&
+                            ondPower.text != "" &&
+                            ondVoltage.text != "" &&
+                            battCap.text != "" &&
+                            battVoltage.text != "") {
+                          calcul02(
+                            widget.isConnected,
+                            double.parse(pannelVoltage.text),
+                            double.parse(pannelPower.text),
+                            !widget.isConnected
+                                ? double.parse(battCap.text)
+                                : 0.0,
+                            !widget.isConnected
+                                ? double.parse(battVoltage.text)
+                                : 0.0,
+                            double.parse(ondPower.text),
+                            double.parse(ondVoltage.text),
+                          );
+                        } else {
+                          notification(context,
+                              "Veillez completé toute les cases !!!", 50);
+                        }
+                      }
                     },
                     child: button(context, 'Continuer',
                         CupertinoIcons.circle_grid_hex_fill),
@@ -637,15 +749,52 @@ class _SolarPageState extends State<SolarPage> {
                   GestureDetector(
                     onTap: () {
                       // appel de la fonction de calcul
-                      calcul03(
-                        double.parse(pricePannel.text),
-                        double.parse(priceBatt.text),
-                        double.parse(priceOnd.text),
-                        double.parse(otherPrice.text),
-                        double.parse(priceEnergy.text),
-                        isSelected ? double.parse(interestRate.text) : 0.0,
-                        double.parse(times.text),
-                      );
+                      if (!isBudget) {
+                        calcul03(
+                          isBudget ? double.parse(pricePannel.text) : 0.0,
+                          isBudget
+                              ? !widget.isConnected
+                                  ? double.parse(priceBatt.text)
+                                  : 0.0
+                              : 0.0,
+                          isBudget ? double.parse(priceOnd.text) : 0.0,
+                          isBudget ? double.parse(otherPrice.text) : 0.0,
+                          isBudget ? double.parse(priceEnergy.text) : 0.0,
+                          isBudget
+                              ? isSelected
+                                  ? double.parse(interestRate.text)
+                                  : 0.0
+                              : 0.0,
+                          isBudget ? double.parse(times.text) : 0.0,
+                        );
+                      } else {
+                        if (pricePannel.text != "" &&
+                            priceOnd.text != "" &&
+                            otherPrice.text != "" &&
+                            priceEnergy.text != "" &&
+                            times.text != "") {
+                          calcul03(
+                            isBudget ? double.parse(pricePannel.text) : 0.0,
+                            isBudget
+                                ? !widget.isConnected
+                                    ? double.parse(priceBatt.text)
+                                    : 0.0
+                                : 0.0,
+                            isBudget ? double.parse(priceOnd.text) : 0.0,
+                            isBudget ? double.parse(otherPrice.text) : 0.0,
+                            isBudget ? double.parse(priceEnergy.text) : 0.0,
+                            isBudget
+                                ? isSelected
+                                    ? double.parse(interestRate.text)
+                                    : 0.0
+                                : 0.0,
+                            isBudget ? double.parse(times.text) : 0.0,
+                          );
+                        } else {
+                          notification(context,
+                              "Veillez completé toute les cases !!!", 50);
+                        }
+                      }
                     },
                     child: button(context, 'Continuer',
                         CupertinoIcons.circle_grid_hex_fill),
@@ -653,39 +802,159 @@ class _SolarPageState extends State<SolarPage> {
                 if (isFinish3)
                   GestureDetector(
                     onTap: () {
+                      Map<String, Object> autonomyMap = {};
+                      List<Map<String, Object>> batt = [];
+                      Map<String, Object> BattPrice = {};
+                      List<Map<String, Object>> budget = [];
+                      if (!widget.isConnected) {
+                        autonomyMap = {
+                          'name': "Autonomie de stockage (j)",
+                          'value': autonomy.text,
+                          'icon': CupertinoIcons.calendar,
+                        };
+                        //
+                        batt = [
+                          {
+                            'name': "Capacité de la batterie (Ah)",
+                            'value': battCap.text,
+                            'icon': Icons.battery_full,
+                          },
+                          {
+                            'name': "Tension de la batterie (V)",
+                            'value': battVoltage.text,
+                            'icon': Icons.battery_full,
+                          }
+                        ];
+                        BattPrice = {
+                          'name': "Prix d'une batterie (\$)",
+                          'value': priceBatt.text,
+                          'icon': CupertinoIcons.money_dollar_circle,
+                        };
+                      }
+                      //
+                      if (isBudget) {
+                        budget = [
+                          BattPrice,
+                          {
+                            'name': "Prix d'un panneaux (\$)",
+                            'value': pricePannel.text,
+                            'icon': CupertinoIcons.money_dollar_circle,
+                          },
+                          {
+                            'name': "Prix d'un onduleur (\$)",
+                            'value': priceOnd.text,
+                            'icon': CupertinoIcons.money_dollar_circle,
+                          },
+                          {
+                            'name': "Autres frais d'installation (\$)",
+                            'value': otherPrice.text,
+                            'icon': CupertinoIcons.money_dollar_circle,
+                          },
+                          {
+                            'name': "Prix de l'énergie (\$/kWh)",
+                            'value': priceEnergy.text,
+                            'icon': CupertinoIcons.money_dollar_circle,
+                          },
+                          {
+                            'name': "Taux d'intérêt de l'argent investi (%)",
+                            'value': isSelected ? interestRate.text : "0",
+                            'icon': Icons.percent,
+                          },
+                          {
+                            'name': "Durée de production de la centrale (an)",
+                            'value': times.text,
+                            'icon': CupertinoIcons.calendar,
+                          },
+                        ];
+                      }
                       // appel de la fonction result du simulateur
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => Result(
-                            resultEnergy: firstResult + [{
-                              'name': 'Temps de charge',
-                              'value':allTime(chargingTime),
-                              'icon': CupertinoIcons.time,
-                            }],
-                            resultDivice: pannelResult+battResult+ [{
-                              'name': "Nombres d'onduleur en parallèle",
-                              'value':numberOnd.ceil().toString(),
-                              'icon': CupertinoIcons.waveform_circle,
-                            }],
+                            enter: [
+                                  {
+                                    'name': "Puissance installation (W)",
+                                    'value': power.text,
+                                    'icon': CupertinoIcons.bolt_circle,
+                                  },
+                                  {
+                                    'name': "Heure d'utilisation (h)",
+                                    'value': hour.text,
+                                    'icon': CupertinoIcons.time,
+                                  },
+                                  autonomyMap,
+                                  {
+                                    'name': "Tension du panneaux(V)",
+                                    'value': pannelVoltage.text,
+                                    'icon': Icons.solar_power,
+                                  },
+                                  {
+                                    'name': "Courant du panneaux (A)",
+                                    'value': pannelCurrent.text,
+                                    'icon': Icons.solar_power,
+                                  },
+                                  {
+                                    'name': "Puissance du panneaux  (W)",
+                                    'value': pannelPower.text,
+                                    'icon': Icons.solar_power,
+                                  }
+                                ] +
+                                batt +
+                                [
+                                  {
+                                    'name': "Puissance de l'onduleur (W)",
+                                    'value': ondPower.text,
+                                    'icon': CupertinoIcons.waveform_circle,
+                                  },
+                                  {
+                                    'name':
+                                        "Tension d'attaque de l'onduleur (V)",
+                                    'value': ondVoltage.text,
+                                    'icon': CupertinoIcons.waveform_circle,
+                                  }
+                                ] +
+                                budget,
+                            //
+                            resultEnergy: firstResult +
+                                [
+                                  {
+                                    'name': 'Temps de charge',
+                                    'value': allTime(chargingTime),
+                                    'icon': CupertinoIcons.time,
+                                  }
+                                ],
+                            resultDivice: pannelResult +
+                                battResult +
+                                [
+                                  {
+                                    'name': "Nombres d'onduleur en parallèle",
+                                    'value': numberOnd.ceil().toString(),
+                                    'icon': CupertinoIcons.waveform_circle,
+                                  }
+                                ],
                             resultBudget: budgetResult,
-                            resultEnv: [{
-                              'name': "Crédits carbone produits par an",
-                              'value':cc.ceil().toString(),
-                              'icon': CupertinoIcons.tree,
-                            },
+                            resultEnv: [
+                              {
+                                'name': "Crédits carbone produits par an",
+                                'value': cc.ceil().toString(),
+                                'icon': CupertinoIcons.tree,
+                              },
                               {
                                 'name': "Rémunération carbone (\$/an)",
-                                'value':ccPrice.ceil().toString(),
+                                'value': ccPrice.ceil().toString(),
                                 'icon': CupertinoIcons.money_dollar_circle,
                               },
                               {
                                 'name': "Rémunération carbone total (\$)",
-                                'value':ccAllPrice.ceil().toString(),
+                                'value': ccAllPrice.ceil().toString(),
                                 'icon': CupertinoIcons.money_dollar_circle,
-                              }],
-                            profitability: profitability/100,
-                            allprice:crp,
+                              }
+                            ],
+                            priceU: crp * (profitability / 100),
+                            energyU: energy * 365,
+                            isConnected: widget.isConnected,
+                            isBudget: isBudget,
                           ),
                         ),
                       );
@@ -895,11 +1164,16 @@ class _SolarPageState extends State<SolarPage> {
     double d =
         0.1; // pourcentage du coût de repayement pour trouve le priceExpl
     double priceCc = 26.5;
-
-    cti = (numberPannel * pricePannel) +
-        (numberBatt * priceBatt) +
-        (numberOnd.ceil() * priceOnd) +
-        otherPrice; // calcul du coût total d'investissement
+    if (widget.isConnected) {
+      cti = (numberPannel * pricePannel) +
+          (numberOnd.ceil() * priceOnd) +
+          otherPrice; // calcul du coût total d'investissement
+    } else {
+      cti = (numberPannel * pricePannel) +
+          (numberBatt * priceBatt) +
+          (numberOnd.ceil() * priceOnd) +
+          otherPrice; // calcul du coût total d'investissement
+    }
     debugPrint("le coût total d'investissement est ${cti.toString()}");
 
     crp = (1 + (interestRate / 100)) * cti; // calcul du coût de repayement
@@ -911,18 +1185,24 @@ class _SolarPageState extends State<SolarPage> {
     debugPrint("la recette nette generer est ${rng.toString()}");
 
     priceExpl = d * crp;
-    tri =
-        crp / (rng - priceExpl); // calcul du temps de retour à l'investissement
-    debugPrint("le temps de retour à l'investissement est ${tri.toString()}");
+    if (isBudget) {
+      tri = crp /
+          (rng - priceExpl); // calcul du temps de retour à l'investissement
+      debugPrint("le temps de retour à l'investissement est ${tri.toString()}");
 
-    profitability = ((rng - priceExpl) / crp) * 100; // calcul de la rentabilité
-    debugPrint("la rentabilité est ${profitability.toString()}");
+      profitability =
+          ((rng - priceExpl) / crp) * 100; // calcul de la rentabilité
+      debugPrint("la rentabilité est ${profitability.toString()}");
 
-    roi = ((((rng - priceExpl) * times) - crp) / crp) *
-        100; // calcul du retour sur investissement
-    debugPrint("le retour sur investissement est ${roi.toString()}");
-
-    // calcul budgetaire
+      roi = ((((rng - priceExpl) * times) - crp) / crp) *
+          100; // calcul du retour sur investissement
+      debugPrint("le retour sur investissement est ${roi.toString()}");
+    } else {
+      tri = 0.0;
+      profitability = 0.0;
+      roi = 0.0;
+    }
+    // calcul environnementaux
 
     cc = double.parse(power.text) / 1000;
     ccPrice = cc * priceCc;
@@ -941,7 +1221,7 @@ class _SolarPageState extends State<SolarPage> {
       cti.ceil().toString(),
       crp.ceil().toString(),
       rng.ceil().toString(),
-      tri >0.0?allTime2(tri * 8760):"Jamais",
+      tri > 0.0 ? allTime2(tri * 8760) : "Jamais",
       profitability.ceil().toString(),
       roi.ceil().toString(),
     ];
