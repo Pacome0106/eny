@@ -40,13 +40,21 @@ class _DetailProvinceState extends State<DetailProvince> {
 
   late WeatherFactory weatherFactory;
   Weather? currentWeather;
+  String chefLieu = "";
 
   void fetchWeather() async {
     Weather? weather;
+
     if (widget.data['chef-lieu'] == '') {
+      setState(() {
+      chefLieu = "Kinshasa";
+        });
       weather = await weatherFactory.currentWeatherByLocation(
           -4.0347884999999994, 21.75502799999998);
     } else {
+      setState(() {
+        chefLieu = widget.data['chef-lieu'];
+      });
       weather = await weatherFactory
           .currentWeatherByCityName("${widget.data['chef-lieu']}");
     }
@@ -236,10 +244,10 @@ class _DetailProvinceState extends State<DetailProvince> {
               ],
             ),
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(0.0),
+              preferredSize: const Size.fromHeight(10.0),
               child: Container(
                 padding: const EdgeInsets.only(left: 15),
-                height: 50,
+                height: 65,
                 width: double.maxFinite,
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
@@ -254,7 +262,8 @@ class _DetailProvinceState extends State<DetailProvince> {
                   children: [
                     Center(
                       child: Container(
-                        width: 60,
+                        margin: const EdgeInsets.only(top: 10),
+                        width: 50,
                         height: 8.0,
                         decoration: BoxDecoration(
                             color: AppColors.activColor,
@@ -267,7 +276,15 @@ class _DetailProvinceState extends State<DetailProvince> {
                         text: widget.data['name'][0].toUpperCase() +
                             widget.data['name'].substring(1),
                         color: Theme.of(context).hintColor,
-                        size: 15,
+                        size: 18,
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.topLeft,
+                      child: AppText(
+                        text: chefLieu[0].toUpperCase() +
+                            chefLieu.substring(1),
+                        color: Theme.of(context).cardColor,
                       ),
                     ),
                   ],
@@ -471,7 +488,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                           sizedbox,
                           AppText(
                             text: 'courbe des puissances',
-                            color: Theme.of(context).unselectedWidgetColor,
+                            color: Theme.of(context).hintColor,
                           ),
                           sizedbox,
                           Center(
