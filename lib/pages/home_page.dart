@@ -4,7 +4,7 @@ import 'package:eny/pages/data_page.dart';
 import 'package:eny/pages/simulator_page.dart';
 import 'package:eny/widgets/colors.dart';
 import 'package:flutter/material.dart';
-
+import 'package:new_version_plus/new_version_plus.dart';
 
 BorderRadius borderRadius = BorderRadius.circular(10);
 SizedBox sizedbox = const SizedBox(height: 10);
@@ -14,13 +14,13 @@ class HomePage extends StatefulWidget {
   HomePage({
     super.key,
     this.currentIndex = 0,
-    this.videoUrl ='',
+    this.videoUrl = '',
     this.videoTitre = '',
-
-
   });
+
   int currentIndex;
-  String videoUrl ;
+  String videoUrl;
+
   String videoTitre;
 
   @override
@@ -29,17 +29,53 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   @override
+  void initState() {
+    final newVersion = NewVersionPlus(
+      iOSId: 'com.disney.disneyplus',
+      androidId: 'com.renewableEnergy.eny',
+      androidPlayStoreCountry: null,
+      androidHtmlReleaseNotes: true, //support country code
+    );
+
+    advancedStatusCheck(newVersion);
+    super.initState();
+  }
+
+  advancedStatusCheck(NewVersionPlus newVersion) async {
+    final status = await newVersion.getVersionStatus();
+    if (status != null) {
+      // debugPrint(status.releaseNotes);
+      // debugPrint(status.appStoreLink);
+      debugPrint(status.localVersion);
+      debugPrint(status.storeVersion);
+      // debugPrint(status.canUpdate.toString());
+      newVersion.showUpdateDialog(
+        context: context,
+        versionStatus: status,
+        updateButtonText: "Installer",
+        dismissButtonText: "Plus tard",
+        dialogTitle: 'Mise à jour disponible',
+
+        dialogText:
+            "Nous sommes ravis de vous présenter la version ${status.localVersion} de notre application, qui apporte de nombreuses améliorations et fonctionnalités par rapport à la version précédente (version ${status.storeVersion})",
+        launchModeVersion: LaunchModeVersion.external,
+        allowDismissal: true,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: DefaultTabController(
-          initialIndex:widget.currentIndex,
+          initialIndex: widget.currentIndex,
           length: 2,
           child: Stack(alignment: Alignment.bottomCenter, children: [
             const TabBarView(
               children: [
-                 DataPage(),
-                 SimulatorPage(),
+                DataPage(),
+                SimulatorPage(),
               ],
             ),
             Padding(
@@ -78,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                     indicatorColor: Theme.of(context).focusColor,
                     labelColor: Theme.of(context).focusColor,
                     unselectedLabelColor: Theme.of(context).focusColor,
-                    tabs:  const [
+                    tabs: const [
                       Tab(
                         child: Icon(
                           Icons.roofing,

@@ -90,7 +90,7 @@ class _DataPageState extends State<DataPage> {
         CupertinoSliverNavigationBar(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           largeTitle: const Text(
-            'Statistiques',
+            'Eny',
             style: TextStyle(
               color: AppColors.activColor,
               fontFamily: 'Nunito',
