@@ -25,6 +25,7 @@ class _DataPageState extends State<DataPage> {
   List provincesSearch = [];
   bool search = false;
   bool isData = false;
+
   TextEditingController textController = TextEditingController();
 
   getprovince() async {
@@ -89,324 +90,474 @@ class _DataPageState extends State<DataPage> {
     return CustomScrollView(slivers: [
       CupertinoSliverNavigationBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        largeTitle: const Text(
-          'Eny',
-          style: TextStyle(
-            color: AppColors.activColor,
-            fontFamily: 'Nunito',
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        stretch: true,
-        border: Border(),
-        trailing: GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-                elevation: 10,
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                context: context,
-                builder: (context) {
-                  return FractionallySizedBox(
-                    heightFactor: 0.7,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                          color: Theme.of(context).hoverColor,
-                          width: 2.0,
-                        ),
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16.0),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              padding:
-                              const EdgeInsets.only(left: 20, right: 20),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.center,
-                                    height: 8,
-                                    width: 50,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: AppColors.activColor),
-                                  ),
-                                  Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        AppTextLarge(
-                                          text: 'Paramètres',
-                                          size: 18.0,
-                                          color: Theme.of(context).hintColor,
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Icon(
-                                            Icons.close,
-                                            color: AppColors.poweroffColor,
-                                            size: 30,
-                                          ),
-                                        )
-                                      ]),
-                                  const SizedBox(height: 20),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding:
-                                const EdgeInsets.only(left: 20, right: 20),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    sizedbox,
-                                    Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).focusColor,
-                                        borderRadius: borderRadius,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              isTheme = !isTheme;
-                                              themeChange.darkTheme = isTheme;
-                                              setState(
-                                                    () {
-                                                  isTheme;
-                                                },
-                                              );
-                                            },
-                                            style: ButtonStyle(
-                                              elevation:
-                                              MaterialStateProperty.all(0),
-                                              backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.transparent),
-                                              overlayColor:
-                                              MaterialStateProperty.all(
-                                                Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                !isTheme
-                                                    ? AppText(
-                                                  text: 'Mode sombre',
-                                                  color: Theme.of(context)
-                                                      .hintColor,
-                                                )
-                                                    : AppText(
-                                                  text: 'Mode elair',
-                                                  color: Theme.of(context)
-                                                      .hintColor,
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 30,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .canvasColor,
-                                                    borderRadius: borderRadius,
-                                                  ),
-                                                  child: Icon(
-                                                    !isTheme
-                                                        ? Icons
-                                                        .nights_stay_sharp
-                                                        : Icons.light_mode,
-                                                    color: Theme.of(context)
-                                                        .unselectedWidgetColor,
-                                                    size: 20,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                          Lign(
-                                            indent: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.05,
-                                            endIndent: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.05,
-                                          ),
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              propos();
-                                            },
-                                            style: ButtonStyle(
-                                              elevation:
-                                              MaterialStateProperty.all(0),
-                                              backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.transparent),
-                                              overlayColor: MaterialStateProperty
-                                                  .all(Theme.of(context)
-                                                  .scaffoldBackgroundColor),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                AppText(
-                                                  text: 'À propos',
-                                                  color: Theme.of(context)
-                                                      .hintColor,
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 30,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .canvasColor,
-                                                    borderRadius: borderRadius,
-                                                  ),
-                                                  child: Icon(
-                                                    CupertinoIcons.rectangle_fill_on_rectangle_fill,
-                                                    color: Theme.of(context)
-                                                        .unselectedWidgetColor,
-                                                    size: 20
-                                                    ,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    sizedbox,
-                                    sizedbox,
-                                    Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context).focusColor,
-                                        borderRadius: borderRadius,
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              concepteurs();
-                                            },
-                                            style: ButtonStyle(
-                                              elevation:
-                                              MaterialStateProperty.all(0),
-                                              backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.transparent),
-                                              overlayColor:
-                                              MaterialStateProperty.all(
-                                                Theme.of(context)
-                                                    .scaffoldBackgroundColor,
-                                              ),
-                                            ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .spaceBetween,
-                                              children: [
-                                                AppText(
-                                                  text: 'Développeurs',
-                                                  color: Theme.of(context)
-                                                      .hintColor,
-                                                ),
-                                                Container(
-                                                  height: 30,
-                                                  width: 30,
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .canvasColor,
-                                                    borderRadius: borderRadius,
-                                                  ),
-                                                  child: Icon(
-                                                    CupertinoIcons.person_2_fill,
-                                                    color: Theme.of(context)
-                                                        .unselectedWidgetColor,
-                                                    size: 20,
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+        leading: search
+            ? Row(
+                children: [
+                  CupertinoButton(
+                    padding: const EdgeInsets.all(0),
+                    alignment: Alignment.centerLeft,
+                    child: const Icon(CupertinoIcons.back,
+                        color: AppColors.activColor, size: 30),
+                    onPressed: () {
+                      setState(() {
+                        search = false;
+                        provincesSearch = [];
+                      });
+                    },
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: CupertinoSearchTextField(
+                        controller: textController,
+                        onChanged: (String value) {
+                          provincesSearch = [];
+                          for (int i = 0; i < provinces.length; i++) {
+                            String string = provinces[i]['name'];
+                            if (string.contains(value.trim())) {
+                              provincesSearch.add(provinces[i]);
+                            }
+                          }
+                          setState(() {
+                            provincesSearch;
+                            search = true;
+                          });
+                        },
                       ),
                     ),
-                  );
-                });
-          },
-          child: const Icon(
-            Icons.more_vert,
-            color: AppColors.activColor,
-            size: 35.0,
-          ),
-        ),
+                  ),
+                ],
+              )
+            : const SizedBox(),
+        largeTitle: !search
+            ? Text(
+                'Eny',
+                style: TextStyle(
+                  color: Theme.of(context).hintColor,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w900,
+                ),
+              )
+            : Text(
+                'Recherche',
+                style: TextStyle(
+                  color: Theme.of(context).hintColor,
+                  fontFamily: 'Montserrat',
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+        stretch: true,
+        border: const Border(),
+        trailing: !search
+            ? SizedBox(
+                width: 80,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          search = true;
+                        });
+                      },
+                      child: Icon(
+                        CupertinoIcons.search,
+                        color: AppColors.activColor,
+                        size: 30,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                            elevation: 10,
+                            backgroundColor:
+                                Theme.of(context).scaffoldBackgroundColor,
+                            context: context,
+                            builder: (context) {
+                              return FractionallySizedBox(
+                                heightFactor: 0.7,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Theme.of(context).hoverColor,
+                                      width: 2.0,
+                                    ),
+                                    color: Theme.of(context)
+                                        .scaffoldBackgroundColor,
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(16.0),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                alignment: Alignment.center,
+                                                height: 8,
+                                                width: 50,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            5),
+                                                    color:
+                                                        AppColors.activColor),
+                                              ),
+                                              Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    AppTextLarge(
+                                                      text: 'Paramètres',
+                                                      size: 24,
+                                                      color: Theme.of(context)
+                                                          .hintColor,
+                                                    ),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Icon(
+                                                        Icons.close,
+                                                        color: AppColors
+                                                            .poweroffColor,
+                                                        size: 30,
+                                                      ),
+                                                    )
+                                                  ]),
+                                              const SizedBox(height: 20),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                sizedbox,
+                                                Container(
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .focusColor,
+                                                    borderRadius: borderRadius,
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          isTheme = !isTheme;
+                                                          themeChange
+                                                                  .darkTheme =
+                                                              isTheme;
+                                                          setState(
+                                                            () {
+                                                              isTheme;
+                                                            },
+                                                          );
+                                                        },
+                                                        style: ButtonStyle(
+                                                          elevation:
+                                                              MaterialStateProperty
+                                                                  .all(0),
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Colors
+                                                                      .transparent),
+                                                          overlayColor:
+                                                              MaterialStateProperty
+                                                                  .all(
+                                                            Theme.of(context)
+                                                                .scaffoldBackgroundColor,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            !isTheme
+                                                                ? AppText(
+                                                                    text:
+                                                                        'Mode sombre',
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .hintColor,
+                                                                  )
+                                                                : AppText(
+                                                                    text:
+                                                                        'Mode elair',
+                                                                    color: Theme.of(
+                                                                            context)
+                                                                        .hintColor,
+                                                                  ),
+                                                            Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .canvasColor,
+                                                                borderRadius:
+                                                                    borderRadius,
+                                                              ),
+                                                              child: Icon(
+                                                                !isTheme
+                                                                    ? Icons
+                                                                        .nights_stay_sharp
+                                                                    : Icons
+                                                                        .light_mode,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .unselectedWidgetColor,
+                                                                size: 20,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Lign(
+                                                        indent: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.05,
+                                                        endIndent:
+                                                            MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width *
+                                                                0.05,
+                                                      ),
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          propos();
+                                                        },
+                                                        style: ButtonStyle(
+                                                          elevation:
+                                                              MaterialStateProperty
+                                                                  .all(0),
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Colors
+                                                                      .transparent),
+                                                          overlayColor:
+                                                              MaterialStateProperty
+                                                                  .all(Theme.of(
+                                                                          context)
+                                                                      .scaffoldBackgroundColor),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            AppText(
+                                                              text: 'À propos',
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .hintColor,
+                                                            ),
+                                                            Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .canvasColor,
+                                                                borderRadius:
+                                                                    borderRadius,
+                                                              ),
+                                                              child: Icon(
+                                                                CupertinoIcons
+                                                                    .rectangle_fill_on_rectangle_fill,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .unselectedWidgetColor,
+                                                                size: 20,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                sizedbox,
+                                                sizedbox,
+                                                Container(
+                                                  alignment: Alignment.center,
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context)
+                                                        .focusColor,
+                                                    borderRadius: borderRadius,
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      ElevatedButton(
+                                                        onPressed: () {
+                                                          concepteurs();
+                                                        },
+                                                        style: ButtonStyle(
+                                                          elevation:
+                                                              MaterialStateProperty
+                                                                  .all(0),
+                                                          backgroundColor:
+                                                              MaterialStateProperty
+                                                                  .all(Colors
+                                                                      .transparent),
+                                                          overlayColor:
+                                                              MaterialStateProperty
+                                                                  .all(
+                                                            Theme.of(context)
+                                                                .scaffoldBackgroundColor,
+                                                          ),
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            AppText(
+                                                              text:
+                                                                  'Développeurs',
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .hintColor,
+                                                            ),
+                                                            Container(
+                                                              height: 30,
+                                                              width: 30,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .canvasColor,
+                                                                borderRadius:
+                                                                    borderRadius,
+                                                              ),
+                                                              child: Icon(
+                                                                CupertinoIcons
+                                                                    .person_2_fill,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .unselectedWidgetColor,
+                                                                size: 20,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                      child: const Icon(
+                        CupertinoIcons.settings,
+                        color: AppColors.activColor,
+                        size: 30,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : const SizedBox(),
       ),
-      SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-          child: CupertinoSearchTextField(
-            controller: textController,
-            onChanged: (String value) {
-              provincesSearch = [];
-              for (int i = 0; i < provinces.length; i++) {
-                String string = provinces[i]['name'];
-                if (string.contains(value.trim())) {
-                  provincesSearch.add(provinces[i]);
-                }
-              }
-              setState(() {
-                provincesSearch;
-                search = true;
-              });
-            },
-          ),
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const SizedBox(),
+                Padding(
+                  padding: const EdgeInsets.only(right: 20, top: 10),
+                  child: isData
+                      ? !search
+                          ? CupertinoButton(
+                              padding: const EdgeInsets.all(0),
+                              alignment: Alignment.centerRight,
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => DetailProvince(
+                                      tag: "0",
+                                      data: provinces[0],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                children: [
+                                  AppTextLarge(
+                                    text:
+                                        provinces[0]['name'][0].toUpperCase() +
+                                            provinces[0]['name'].substring(1),
+                                    color: AppColors.activColor,
+                                    size: 24,
+                                  ),
+                                  sizedbox2,
+                                  Icon(
+                                    CupertinoIcons.globe,
+                                    color: AppColors.activColor,
+                                    size: 30,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : const SizedBox(height: 20)
+                      : Container(
+                          height: 30,
+                          width: 130,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).hoverColor,
+                            borderRadius: borderRadius,
+                          ),
+                        ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
       SliverList(
         delegate: SliverChildBuilderDelegate(
-              (context, index) {
+          (context, index) {
             List<Map<String, dynamic>> data = [
               {'category': 'Superficie', 'sales': 0},
               {'category': 'Population', 'sales': 0},
               {'category': 'Density', 'sales': 0},
               {'category': 'Taux_electric', 'sales': 0},
             ];
-            final types = {
-              'Type 1': Colors.green,
-              'Type 2': Colors.lightBlue,
-              'Type 3': Colors.amber,
-              'Type 4': const Color(0xFFFF6422)
-            };
             var provincesAll;
             if (isData) {
-              provincesAll =
-              !search ? provinces[index] : provincesSearch[index];
+              provincesAll = !search
+                  ? provinces.sublist(1)[index]
+                  : provincesSearch[index];
               double superficies = calculs(
                   double.parse(reference.first['superficial']),
                   double.parse(provincesAll['superficial']));
@@ -435,277 +586,414 @@ class _DataPageState extends State<DataPage> {
             return Scrollbar(
               child: isData
                   ? Hero(
-                tag: "$index",
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailProvince(
-                          tag: index.toString(),
-                          data: provincesAll,
+                      tag: "$index",
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailProvince(
+                                tag: index.toString(),
+                                data: provincesAll,
+                              ),
+                            ),
+                          );
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 20, right: 20, bottom: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppTextLarge(
+                                text: provincesAll['name'][0].toUpperCase() +
+                                    provincesAll['name'].substring(1),
+                                size: 24,
+                                color: Theme.of(context).hintColor,
+                              ),
+                              const SizedBox(height: 13),
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                decoration: BoxDecoration(
+                                    color: Theme.of(context).focusColor,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(
+                                        color: AppColors.activColor)),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 20, right: 20, top: 20, bottom: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  color: AppColors.activColor,
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .hoverColor,
+                                                  value: data[0]['sales'] / 100,
+                                                  strokeWidth: 6,
+                                                ),
+                                                sizedbox2,
+                                                sizedbox2,
+                                                AppText(
+                                                  text: "Superficie: ",
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                                AppTextLarge(
+                                                  text: addSpaces(
+                                                    "${provincesAll['superficial']} km2",
+                                                  ),
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                              ],
+                                            ),
+                                            AppText(
+                                              text: "${data[0]['sales']} %",
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              size: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  color: AppColors.activColor,
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .hoverColor,
+                                                  value: data[1]['sales'] / 100,
+                                                  strokeWidth: 6,
+                                                ),
+                                                sizedbox2,
+                                                sizedbox2,
+                                                AppText(
+                                                  text: "Population: ",
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                                AppTextLarge(
+                                                  text: addSpaces(
+                                                    "${provincesAll['population']} hab",
+                                                  ),
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                              ],
+                                            ),
+                                            AppText(
+                                              text: "${data[1]['sales']} %",
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              size: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  color: AppColors.activColor,
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .hoverColor,
+                                                  value: data[2]['sales'] / 100,
+                                                  strokeWidth: 6,
+                                                ),
+                                                sizedbox2,
+                                                sizedbox2,
+                                                AppText(
+                                                  text: "Densité: ",
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                                AppTextLarge(
+                                                  text:
+                                                      "${provincesAll['density']} hab/km3",
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                              ],
+                                            ),
+                                            AppText(
+                                              text: "${data[2]['sales']} %",
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              size: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                CircularProgressIndicator(
+                                                  color: AppColors.activColor,
+                                                  backgroundColor:
+                                                      Theme.of(context)
+                                                          .hoverColor,
+                                                  value: data[3]['sales'] / 100,
+                                                  strokeWidth: 6,
+                                                ),
+                                                sizedbox2,
+                                                sizedbox2,
+                                                AppText(
+                                                  text:
+                                                      "Taux d'électrification:",
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                  size: 16,
+                                                ),
+                                              ],
+                                            ),
+                                            AppText(
+                                              text: "${data[3]['sales']} %",
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              size: 16,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    );
-                  },
-                  child: Container(
-                    alignment: Alignment.centerLeft,
-                    margin: const EdgeInsets.all(10),
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 10, left: 20, right: 20),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).focusColor,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black26,
-                          blurRadius: 10,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
-                    ),
-                    height: 160,
-                    child: Row(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            AppTextLarge(
-                              text:
-                              provincesAll['name'][0].toUpperCase() +
-                                  provincesAll['name'].substring(1),
-                              size: 26,
-                              color: AppColors.activColor,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            height: 30,
+                            width: 200,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).hoverColor,
+                              borderRadius: borderRadius,
                             ),
-                            const SizedBox(height: 5),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 5),
-                                  height: 18,
-                                  width: 18,
-                                  color: Colors.green,
-                                ),
-                                AppTextLarge(
-                                    text: "Superficie: ",
-                                    color: Theme.of(context).cardColor,
-                                    size: 16),
-                                AppTextLarge(
-                                    text: addSpaces(
-                                      "${provincesAll['superficial']} km2",
-                                    ),
-                                    color: Theme.of(context).hintColor,
-                                    size: 16),
-                              ],
+                          ),
+                          const SizedBox(height: 13),
+                          Container(
+                            alignment: Alignment.centerLeft,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).focusColor,
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 5),
-                                  height: 18,
-                                  width: 18,
-                                  color: Colors.lightBlue,
-                                ),
-                                AppTextLarge(
-                                    text: "Population: ",
-                                    color: Theme.of(context).cardColor,
-                                    size: 16),
-                                AppTextLarge(
-                                    text: addSpaces(
-                                      "${provincesAll['population']} hab",
-                                    ),
-                                    color: Theme.of(context).hintColor,
-                                    size: 16),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 5),
-                                  height: 18,
-                                  width: 18,
-                                  color: Colors.amber,
-                                ),
-                                AppTextLarge(
-                                    text: "Densité: ",
-                                    color: Theme.of(context).cardColor,
-                                    size: 16),
-                                AppTextLarge(
-                                    text:
-                                    "${provincesAll['density']} hab/km3",
-                                    color: Theme.of(context).hintColor,
-                                    size: 16),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(right: 5),
-                                  height: 18,
-                                  width: 18,
-                                  color: Colors.deepOrange,
-                                ),
-                                AppTextLarge(
-                                    text: "Taux d'électrification: ",
-                                    color: Theme.of(context).cardColor,
-                                    size: 16),
-                                AppTextLarge(
-                                  text:
-                                  "${provincesAll['taux d\'electrification']} %",
-                                  color: Theme.of(context).hintColor,
-                                  size: 16,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                        Flexible(
-                          child: SizedBox(
-                            width: 90,
-                            height: 90,
-                            child: Chart(
-                              data: data,
-                              variables: {
-                                'category': Variable(
-                                  accessor: (Map map) =>
-                                  map['category'] as String,
-                                ),
-                                'sales': Variable(
-                                  accessor: (Map map) =>
-                                  map['sales'] as num,
-                                  scale: LinearScale(min: 0),
-                                ),
-                              },
-                              marks: [
-                                IntervalMark(
-                                  position: Varset('percent') /
-                                      Varset('category'),
-                                  color: ColorEncode(
-                                    variable: 'category',
-                                    values: types.values.toList(),
-                                  ),
-                                  modifiers: [StackModifier()],
-                                  shape: ShapeEncode(
-                                    value: RectShape(
-                                      labelPosition: 0.5,
-                                      histogram: true,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 20, bottom: 5),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CircularProgressIndicator(
+                                              backgroundColor:
+                                                  Theme.of(context).hoverColor,
+                                              value: 0,
+                                              strokeWidth: 6,
+                                            ),
+                                            sizedbox2,
+                                            sizedbox2,
+                                            Container(
+                                              height: 14,
+                                              width: 240,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .hoverColor,
+                                                borderRadius: borderRadius,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 14,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).hoverColor,
+                                            borderRadius: borderRadius,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  label: LabelEncode(
-                                    encoder: (tuple) => Label(
-                                      tuple['sales'].toString(),
-                                      LabelStyle(
-                                          textStyle: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 10)),
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CircularProgressIndicator(
+                                              backgroundColor:
+                                                  Theme.of(context).hoverColor,
+                                              value: 0,
+                                              strokeWidth: 6,
+                                            ),
+                                            sizedbox2,
+                                            sizedbox2,
+                                            Container(
+                                              height: 14,
+                                              width: 230,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .hoverColor,
+                                                borderRadius: borderRadius,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 14,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).hoverColor,
+                                            borderRadius: borderRadius,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                ),
-                              ],
-                              transforms: [
-                                Proportion(
-                                  variable: 'sales',
-                                  as: 'percent',
-                                ),
-                              ],
-                              coord: PolarCoord(
-                                transposed: true,
-                                dimCount: 1,
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CircularProgressIndicator(
+                                              backgroundColor:
+                                                  Theme.of(context).hoverColor,
+                                              value: 0,
+                                              strokeWidth: 6,
+                                            ),
+                                            sizedbox2,
+                                            sizedbox2,
+                                            Container(
+                                              height: 14,
+                                              width: 180,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .hoverColor,
+                                                borderRadius: borderRadius,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 14,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).hoverColor,
+                                            borderRadius: borderRadius,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 15),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            CircularProgressIndicator(
+                                              backgroundColor:
+                                                  Theme.of(context).hoverColor,
+                                              value: 0,
+                                              strokeWidth: 6,
+                                            ),
+                                            sizedbox2,
+                                            sizedbox2,
+                                            Container(
+                                              height: 14,
+                                              width: 190,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .hoverColor,
+                                                borderRadius: borderRadius,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          height: 14,
+                                          width: 50,
+                                          decoration: BoxDecoration(
+                                            color: Theme.of(context).hoverColor,
+                                            borderRadius: borderRadius,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-                  : Container(
-                alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.all(10),
-                padding: const EdgeInsets.only(
-                    top: 10, bottom: 10, left: 20, right: 20),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).focusColor,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black26,
-                      blurRadius: 10,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                height: 160,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 30,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            color:Theme.of(context).hoverColor,
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          height: 14,
-                          width: 240,
-                          decoration: BoxDecoration(
-                            color:Theme.of(context).hoverColor,
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                        sizedbox,
-                        Container(
-                          height: 14,
-                          width: 230,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).hoverColor,
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                        sizedbox,
-                        Container(
-                          height: 14,
-                          width: 180,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).hoverColor,
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                        sizedbox,
-                        Container(
-                          height: 14,
-                          width: 260,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).hoverColor,
-                            borderRadius: borderRadius,
-                          ),
-                        ),
-                      ],
-                    ),
-                     Flexible(
-                      child: CircleAvatar(
-                        backgroundColor: Theme.of(context).hoverColor,
-                        radius: 40,
+                        ],
                       ),
-                    )
-                  ],
-                ),
-              ),
+                    ),
             );
           },
           childCount: isData
               ? !search
-              ? provinces.length
-              : provincesSearch.length
+                  ? provinces.sublist(1).length
+                  : provincesSearch.length
               : 6,
         ),
       ),
@@ -715,7 +1003,7 @@ class _DataPageState extends State<DataPage> {
   String addSpaces(String value) {
     return value.replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-          (Match match) => '${match[1]} ',
+      (Match match) => '${match[1]} ',
     );
   }
 
@@ -736,8 +1024,7 @@ class _DataPageState extends State<DataPage> {
           ),
           content: AppText(
             text:
-            'Eny  est un outil logiciel qui facilite le choix efficace, optimal et en temps réel d\'un modèle d\'électrification décentralisée et moins coûteux pour un coin donné du pays. Cela permet de prendre des décisions éclairées en matière d\'énergie, favorisant ainsi le développement durable et l\'accès à une énergie abordable pour tous.',
-            size: 14,
+                "Eny est une application qui simplifie le processus de sélection en temps réel d'un modèle d'électrification décentralisée, offrant une solution plus rentable pour une région spécifique du pays. Cet outil permet de prendre des décisions éclairées en matière d'énergie, favorisant ainsi le développement durable et l'accès abordable à l'énergie pour tous.",
             color: Theme.of(context).hintColor,
           ),
         );

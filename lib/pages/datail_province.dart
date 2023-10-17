@@ -47,8 +47,8 @@ class _DetailProvinceState extends State<DetailProvince> {
 
     if (widget.data['chef-lieu'] == '') {
       setState(() {
-      chefLieu = "Kinshasa";
-        });
+        chefLieu = "Kinshasa";
+      });
       weather = await weatherFactory.currentWeatherByLocation(
           -4.0347884999999994, 21.75502799999998);
     } else {
@@ -156,6 +156,7 @@ class _DetailProvinceState extends State<DetailProvince> {
               },
             ),
             expandedHeight: MediaQuery.of(context).size.height * 0.6,
+            collapsedHeight: 70,
             elevation: 0.0,
             pinned: true,
             stretch: true,
@@ -211,13 +212,13 @@ class _DetailProvinceState extends State<DetailProvince> {
                                   AppTextLarge(
                                     text: "${windSpeed.toStringAsFixed(1)} m/s",
                                     color: Colors.blueAccent,
-                                    size: 20,
+                                    size: 16,
                                   ),
                                   sizedbox2,
                                   const Icon(
                                     CupertinoIcons.wind_snow,
                                     color: Colors.blueAccent,
-                                    size: 20,
+                                    size: 16,
                                   ),
                                 ],
                               ),
@@ -234,7 +235,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                   : const Center(
                       child: Icon(
                         CupertinoIcons.arrow_2_circlepath,
-                        size: 35,
+                        size: 30,
                       ),
                     ),
               stretchModes: const <StretchMode>[
@@ -247,7 +248,7 @@ class _DetailProvinceState extends State<DetailProvince> {
               preferredSize: const Size.fromHeight(10.0),
               child: Container(
                 padding: const EdgeInsets.only(left: 15),
-                height: 65,
+                height: 75,
                 width: double.maxFinite,
                 alignment: Alignment.centerLeft,
                 decoration: BoxDecoration(
@@ -276,14 +277,13 @@ class _DetailProvinceState extends State<DetailProvince> {
                         text: widget.data['name'][0].toUpperCase() +
                             widget.data['name'].substring(1),
                         color: Theme.of(context).hintColor,
-                        size: 18,
+                        size: 24,
                       ),
                     ),
                     Container(
                       alignment: Alignment.topLeft,
                       child: AppText(
-                        text: chefLieu[0].toUpperCase() +
-                            chefLieu.substring(1),
+                        text: chefLieu[0].toUpperCase() + chefLieu.substring(1),
                         color: Theme.of(context).cardColor,
                       ),
                     ),
@@ -383,7 +383,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                           Center(
                             child: SfCartesianChart(
                               primaryXAxis: CategoryAxis(
-                                title: AxisTitle(text:"Années" ),
+                                title: AxisTitle(text: "Années"),
                               ),
                               series: <ChartSeries>[
                                 // Renders line chart
@@ -537,7 +537,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                             child: AppTextLarge(
                               text: "Potentiel",
                               color: Theme.of(context).hintColor,
-                              size: 20,
+                              size: 16,
                             ),
                           ),
                           sizedbox,

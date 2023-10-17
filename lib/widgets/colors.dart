@@ -12,7 +12,7 @@ class AppColors {
   static const Color popupColor = Color(0xFFE1E1E1);
   static const Color alertColor2 = Color(0xFFF3CAC8);
   static const Color selectImageColor = Color(0xFF171615);
-  static const Color simpleFondColor = Color(0xFFE6E6E6);
+  static const Color simpleFondColor = Color(0xFFDEDEDC);
   static const Color simpleFondColor2 = Color(0xFFC2C4BB);
   static const Color poweroffColor = Color(0xFFCE1609);
 }

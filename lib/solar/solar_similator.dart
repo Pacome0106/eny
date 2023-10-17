@@ -103,7 +103,6 @@ class _SolarPageState extends State<SolarPage> {
       AppText(
         text: name,
         color: Theme.of(context).hintColor,
-        size: 16,
       ),
       sizedbox2,
       Expanded(
@@ -169,12 +168,12 @@ class _SolarPageState extends State<SolarPage> {
                 Navigator.of(context).pop();
               },
             ),
-            largeTitle: const Text(
+            largeTitle:  Text(
               'Energie Solaire PV',
               style: TextStyle(
-                color: AppColors.activColor,
-                fontFamily: 'Nunito',
-                fontWeight: FontWeight.bold,
+                color: Theme.of(context).hintColor,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w900,
               ),
             ),
             stretch: true,
@@ -215,23 +214,20 @@ class _SolarPageState extends State<SolarPage> {
                         AppText(
                           text: "Temps de charge ",
                           color: Theme.of(context).hintColor,
-                          size: 16,
                         ),
                         sizedbox2,
                         Expanded(
                           child: Container(
+                            padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               color: Theme.of(context).focusColor,
                               borderRadius: borderRadius,
-                              border: Border.all(
-                                color: AppColors.activColor,
-                              ),
                             ),
                             child: Center(
                               child: AppTextLarge(
                                 text: allTime(chargingTime),
                                 color: AppColors.activColor,
-                                size: 20, // new
+                                size: 16, // new
                               ),
                             ),
                           ),
@@ -253,7 +249,7 @@ class _SolarPageState extends State<SolarPage> {
                         AppTextLarge(
                           text: "Panneaux:",
                           color: Theme.of(context).hintColor,
-                          size: 20,
+                          size: 16,
                         ),
                         sizedbox,
                         Row(
@@ -274,7 +270,7 @@ class _SolarPageState extends State<SolarPage> {
                           AppTextLarge(
                             text: "Batterie:",
                             color: Theme.of(context).hintColor,
-                            size: 20,
+                            size: 16,
                           ),
                         if (!widget.isConnected)
                           textField("Capacité de la batterie (Ah)", battCap, 2),
@@ -286,7 +282,7 @@ class _SolarPageState extends State<SolarPage> {
                         AppTextLarge(
                           text: "Onduleur:",
                           color: Theme.of(context).hintColor,
-                          size: 20,
+                          size: 16,
                         ),
                         textField("Puissance de l'onduleur (W)", ondPower, 2),
                         sizedbox,
@@ -315,7 +311,7 @@ class _SolarPageState extends State<SolarPage> {
                         AppTextLarge(
                           text: "Panneaux:",
                           color: Theme.of(context).hintColor,
-                          size: 20,
+                          size: 16,
                         ),
                       ],
                     ),
@@ -334,7 +330,7 @@ class _SolarPageState extends State<SolarPage> {
                       child: AppTextLarge(
                         text: "Batterie:",
                         color: Theme.of(context).hintColor,
-                        size: 20,
+                        size: 16,
                       ),
                     ),
                   ],
@@ -350,7 +346,7 @@ class _SolarPageState extends State<SolarPage> {
                     child: AppTextLarge(
                       text: "Onduleur:",
                       color: Theme.of(context).hintColor,
-                      size: 20,
+                      size: 16,
                     ),
                   ),
                   Padding(
@@ -360,23 +356,20 @@ class _SolarPageState extends State<SolarPage> {
                         AppText(
                           text: "Nombres d'onduleur en parallèle",
                           color: Theme.of(context).hintColor,
-                          size: 16,
                         ),
                         sizedbox2,
                         Expanded(
                           child: Container(
+                            padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
                               color: Theme.of(context).focusColor,
                               borderRadius: borderRadius,
-                              border: Border.all(
-                                color: AppColors.activColor,
-                              ),
                             ),
                             child: Center(
                               child: AppTextLarge(
                                 text: numberOnd.ceil().toString(),
                                 color: AppColors.activColor,
-                                size: 24, // new
+                                size: 16, // new
                               ),
                             ),
                           ),
@@ -400,7 +393,6 @@ class _SolarPageState extends State<SolarPage> {
                         AppText(
                           text: "Voulez-vous faire des calculs budgétaire ?",
                           color: Theme.of(context).hintColor,
-                          size: 16,
                         ),
                         GestureDetector(
                           onTap: () {
@@ -411,15 +403,14 @@ class _SolarPageState extends State<SolarPage> {
                             });
                           },
                           child: Container(
-                            width: 35,
-                            height: 35,
+                            width: 30,
+                            height: 30,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
                                 width: 2,
-                                color: isBudget
-                                    ? AppColors.activColor
-                                    : Colors.grey,
+                                color:  AppColors.activColor
+
                               ),
                             ),
                             child: Container(
@@ -475,7 +466,6 @@ class _SolarPageState extends State<SolarPage> {
                                 text:
                                     "L'argent investi est avec ou sans intérêt ?",
                                 color: Theme.of(context).hintColor,
-                                size: 16,
                               ),
                               GestureDetector(
                                 onTap: () {
@@ -486,15 +476,14 @@ class _SolarPageState extends State<SolarPage> {
                                   });
                                 },
                                 child: Container(
-                                  width: 35,
-                                  height: 35,
+                                  width: 30,
+                                  height: 30,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
                                       width: 2,
-                                      color: isSelected
-                                          ? AppColors.activColor
-                                          : Colors.grey,
+                                      color:  AppColors.activColor
+
                                     ),
                                   ),
                                   child: Container(
@@ -562,23 +551,20 @@ class _SolarPageState extends State<SolarPage> {
                       AppText(
                         text: "Crédits carbone produits par an",
                         color: Theme.of(context).hintColor,
-                        size: 16,
                       ),
                       sizedbox2,
                       Expanded(
                         child: Container(
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: Theme.of(context).focusColor,
                             borderRadius: borderRadius,
-                            border: Border.all(
-                              color: AppColors.activColor,
-                            ),
                           ),
                           child: Center(
                             child: AppTextLarge(
                               text: cc.ceil().toString(),
                               color: AppColors.activColor,
-                              size: 24, // new
+                              size: 16, // new
                             ),
                           ),
                         ),
@@ -594,23 +580,20 @@ class _SolarPageState extends State<SolarPage> {
                       AppText(
                         text: "Rémunération carbone (\$/an)",
                         color: Theme.of(context).hintColor,
-                        size: 16,
                       ),
                       sizedbox2,
                       Expanded(
                         child: Container(
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: Theme.of(context).focusColor,
                             borderRadius: borderRadius,
-                            border: Border.all(
-                              color: AppColors.activColor,
-                            ),
                           ),
                           child: Center(
                             child: AppTextLarge(
                               text: ccPrice.ceil().toString(),
                               color: AppColors.activColor,
-                              size: 24, // new
+                              size: 16, // new
                             ),
                           ),
                         ),
@@ -626,23 +609,20 @@ class _SolarPageState extends State<SolarPage> {
                       AppText(
                         text: "Rémunération carbone total (\$)",
                         color: Theme.of(context).hintColor,
-                        size: 16,
                       ),
                       sizedbox2,
                       Expanded(
                         child: Container(
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                             color: Theme.of(context).focusColor,
                             borderRadius: borderRadius,
-                            border: Border.all(
-                              color: AppColors.activColor,
-                            ),
                           ),
                           child: Center(
                             child: AppTextLarge(
                               text: ccAllPrice.ceil().toString(),
                               color: AppColors.activColor,
-                              size: 24, // new
+                              size: 16, // new
                             ),
                           ),
                         ),
@@ -1097,7 +1077,7 @@ class _SolarPageState extends State<SolarPage> {
     List names1 = [
       "Nonmbre des panneaux",
       "Nbr panneaux en série ",
-      "Nbr Serié des panneaux en parallèle ",
+      "Serié des panneaux en parallèle ",
     ];
     List names2 = [
       "Nonmbre des batterie",

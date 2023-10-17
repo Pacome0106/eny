@@ -20,7 +20,7 @@ class AppText extends StatelessWidget {
       style: TextStyle(
           color: color,
           fontSize: size,
-          fontFamily: 'Nunito',
+          fontFamily: 'Montserrat',
           decoration: TextDecoration.none,
           letterSpacing: 0),
     );

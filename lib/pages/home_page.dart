@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     final newVersion = NewVersionPlus(
       iOSId: 'com.disney.disneyplus',
-      androidId: 'com.renewableEnergy.eny',
+      androidId: 'com.bitz.eny',
       androidPlayStoreCountry: null,
       androidHtmlReleaseNotes: true, //support country code
     );
@@ -44,23 +44,24 @@ class _HomePageState extends State<HomePage> {
   advancedStatusCheck(NewVersionPlus newVersion) async {
     final status = await newVersion.getVersionStatus();
     if (status != null) {
-      // debugPrint(status.releaseNotes);
-      // debugPrint(status.appStoreLink);
-      debugPrint(status.localVersion);
-      debugPrint(status.storeVersion);
-      // debugPrint(status.canUpdate.toString());
-      newVersion.showUpdateDialog(
-        context: context,
-        versionStatus: status,
-        updateButtonText: "Installer",
-        dismissButtonText: "Plus tard",
-        dialogTitle: 'Mise à jour disponible',
-
-        dialogText:
-            "Nous sommes ravis de vous présenter la version ${status.localVersion} de notre application, qui apporte de nombreuses améliorations et fonctionnalités par rapport à la version précédente (version ${status.storeVersion})",
-        launchModeVersion: LaunchModeVersion.external,
-        allowDismissal: true,
-      );
+      if (status.localVersion != status.storeVersion) {
+        // debugPrint(status.releaseNotes);
+        // debugPrint(status.appStoreLink);
+        debugPrint(status.localVersion);
+        debugPrint(status.storeVersion);
+        // debugPrint(status.canUpdate.toString());
+        newVersion.showUpdateDialog(
+          context: context,
+          versionStatus: status,
+          updateButtonText: "Installer",
+          dismissButtonText: "Plus tard",
+          dialogTitle: 'Mise à jour disponible',
+          dialogText:
+              "Nous sommes ravis de vous présenter la version ${status.storeVersion} de notre application, qui apporte de nombreuses améliorations et fonctionnalités par rapport à la version précédente (version ${status.localVersion})",
+          launchModeVersion: LaunchModeVersion.external,
+          allowDismissal: true,
+        );
+      }
     }
   }
 
@@ -83,24 +84,24 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 width: 160,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.grey,
-                      blurRadius: 1,
-                      offset: Offset(1, 4), // Shadow position
-                    ),
-                  ],
-                  color: Theme.of(context).scaffoldBackgroundColor,
+                  borderRadius: BorderRadius.circular(20),
+                  // boxShadow: const [
+                  //   BoxShadow(
+                  //     color: Colors.grey,
+                  //     blurRadius: 1,
+                  //     offset: Offset(1, 4), // Shadow position
+                  //   ),
+                  // ],
+                  color: Theme.of(context).hoverColor,
                 ),
                 child: ClipPath(
                   clipper: const ShapeBorderClipper(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(40),
-                        topLeft: Radius.circular(40),
-                        bottomLeft: Radius.circular(40),
-                        bottomRight: Radius.circular(40),
+                        topRight: Radius.circular(20),
+                        topLeft: Radius.circular(20),
+                        bottomLeft: Radius.circular(20),
+                        bottomRight: Radius.circular(20),
                       ),
                     ),
                   ),
@@ -108,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                     indicatorSize: TabBarIndicatorSize.tab,
                     indicator: BoxDecoration(
                       color: AppColors.activColor,
-                      borderRadius: BorderRadius.circular(25.0),
+                      borderRadius: BorderRadius.circular(20.0),
                     ),
                     mouseCursor: MouseCursor.uncontrolled,
                     indicatorColor: Theme.of(context).focusColor,

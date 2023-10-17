@@ -108,10 +108,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Nunito
+    - family: Montserrat
       fonts:
-        - asset: fonts/Nunito-Black.ttf
-        - asset: fonts/Nunito-Regular.ttf
+        - asset: fonts/MontserratAlternates-Light.otf
+        - asset: fonts/Montserrat-Bold.otf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

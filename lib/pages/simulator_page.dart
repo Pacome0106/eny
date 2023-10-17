@@ -50,17 +50,18 @@ class _SimulatorPageState extends State<SimulatorPage> {
     return CustomScrollView(slivers: [
       CupertinoSliverNavigationBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        largeTitle: const Text(
+        largeTitle:  Text(
           'Simulateur',
           style: TextStyle(
-            color: AppColors.activColor,
-            fontFamily: 'Nunito',
-            fontWeight: FontWeight.bold,
+            color:   Theme.of(context).hintColor,
+            fontFamily: 'Montserrat',
+            fontWeight: FontWeight.w900,
           ),
         ),
         stretch: true,
         border: const Border(),
       ),
+
       SliverGrid(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 350.0,
@@ -114,7 +115,7 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                             title: Center(
                                               child: AppText(
                                                 text:
-                                                    'Sélectionnez le type de votre systeme',
+                                                    'Sélectionnez le type de votre système',
                                                 color:
                                                     Theme.of(context).hintColor,
                                               ),
@@ -153,21 +154,18 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                                             left: 8, right: 8),
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        20,
-                                                      ),
+                                                      borderRadius:borderRadius,
+
                                                       border: Border.all(
                                                         color: AppColors
                                                             .activColor,
-                                                        width: 1,
                                                       ),
                                                     ),
                                                     height: 30,
                                                     width: 120,
                                                     child: AppTextLarge(
                                                       text: 'Autonome',
-                                                      size: 18,
+                                                      size: 16,
                                                       color:
                                                           AppColors.activColor,
                                                     ),
@@ -197,20 +195,17 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                        20,
-                                                      ),
+                                                          borderRadius,
                                                       border: Border.all(
                                                         color: AppColors
                                                             .activColor,
-                                                        width: 1,
                                                       ),
                                                     ),
                                                     height: 30,
                                                     width: 120,
                                                     child: AppTextLarge(
                                                       text: 'Raccordé',
-                                                      size: 18,
+                                                      size: 16,
                                                       color:
                                                           AppColors.activColor,
                                                     ),
@@ -229,7 +224,6 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                       borderRadius: borderRadius,
                                       border: Border.all(
                                         color: AppColors.activColor,
-                                        width: 2,
                                       ),
                                     ),
                                     height: 40,
@@ -251,12 +245,15 @@ class _SimulatorPageState extends State<SimulatorPage> {
                               Navigator.of(context).pop();
                             },
                             child: Container(
+                              padding:
+                              const EdgeInsets.only(
+                                  left: 8, right: 8),
                               height: 30,
                               width: 80,
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 color: AppColors.activColor,
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: borderRadius,
                               ),
                               child: AppTextLarge(
                                 text: 'Fermer',
@@ -281,13 +278,7 @@ class _SimulatorPageState extends State<SimulatorPage> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: Theme.of(context).focusColor,
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black26,
-                            blurRadius: 10,
-                            offset: Offset(0, 3),
-                          ),
-                        ],
+                    border:isData? Border.all(color: AppColors.activColor):Border()
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -300,7 +291,7 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                     "Types d'énergies: ",
                                     style: TextStyle(
                                         color: Theme.of(context).disabledColor,
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontFamily: 'Nunito',
                                         fontWeight: FontWeight.w900,
                                         letterSpacing: 0),
@@ -336,9 +327,8 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                             style: TextStyle(
                                                 color:
                                                     Theme.of(context).cardColor,
-                                                fontSize: 16,
+                                                fontSize: 14,
                                                 fontFamily: 'Nunito',
-                                                fontWeight: FontWeight.w900,
                                                 decoration: TextDecoration.none,
                                                 letterSpacing: 0),
                                             softWrap: false,

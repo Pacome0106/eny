@@ -12,7 +12,7 @@ Widget cardResult(List list, int number){
         maxCrossAxisExtent: 150.0,
         mainAxisSpacing: 30,
         childAspectRatio: 1,
-        mainAxisExtent: 190,
+        mainAxisExtent: 230,
       ),
       delegate: SliverChildBuilderDelegate(
             (BuildContext context, index) {
@@ -20,7 +20,6 @@ Widget cardResult(List list, int number){
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: Container(
               alignment: Alignment.center,
-              height: 190,
               decoration: BoxDecoration(
                 borderRadius: borderRadius,
                 color: Theme.of(context).focusColor,

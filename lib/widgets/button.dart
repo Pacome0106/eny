@@ -25,7 +25,7 @@ Widget button (context,String title, IconData icon){
             AppTextLarge(
               text: title,
               color: Theme.of(context).scaffoldBackgroundColor,
-              size: 22,
+              size: 16,
             ),
             sizedbox2,
             Icon(

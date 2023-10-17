@@ -51,9 +51,9 @@ class _ResultState extends State<Result> {
         color: Theme.of(context).hintColor,
       ),
       columnWidths: const {
-        0: FixedColumnWidth(40.0),
-        1: FixedColumnWidth(200.0),
-        2: FixedColumnWidth(80.0),
+        0: FixedColumnWidth(30.0),
+        1: FixedColumnWidth(180.0),
+        3: FixedColumnWidth(80.0),
       },
       children: [
         TableRow(
@@ -115,7 +115,7 @@ class _ResultState extends State<Result> {
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Theme.of(context).hintColor,
-            fontSize: 16,
+            fontSize: 14,
             letterSpacing: 0,
             fontFamily: 'Nunito',
             decoration: TextDecoration.none,
@@ -128,7 +128,7 @@ class _ResultState extends State<Result> {
           child: AppText(
               text: row['Designation'],
               color: Theme.of(context).hintColor,
-              size: 16),
+             ),
         ),
       ),
       TableCell(
@@ -138,7 +138,7 @@ class _ResultState extends State<Result> {
             child: AppText(
                 text: row['Value'],
                 color: Theme.of(context).hintColor,
-                size: 16),
+              ),
           ),
         ),
       ),
@@ -188,12 +188,12 @@ class _ResultState extends State<Result> {
                 Navigator.of(context).pop();
               },
             ),
-            largeTitle: const Text(
+            largeTitle:  Text(
               'Resultats',
               style: TextStyle(
-                color: AppColors.activColor,
-                fontFamily: 'Nunito',
-                fontWeight: FontWeight.bold,
+                color: Theme.of(context).hintColor,
+                fontFamily: 'Montserrat',
+                fontWeight: FontWeight.w900,
               ),
             ),
             stretch: true,
@@ -247,9 +247,9 @@ class _ResultState extends State<Result> {
                           color: Theme.of(context).hintColor,
                         ),
                         columnWidths: const {
-                          0: FixedColumnWidth(40.0),
-                          1: FixedColumnWidth(200.0),
-                          2: FixedColumnWidth(80.0),
+                          0: FixedColumnWidth(30.0),
+                          1: FixedColumnWidth(180.0),
+                          3: FixedColumnWidth(80.0),
                         },
                         children: [
                           for (var row in tableRows.sublist(
@@ -291,9 +291,9 @@ class _ResultState extends State<Result> {
                             color: Theme.of(context).hintColor,
                           ),
                           columnWidths: const {
-                            0: FixedColumnWidth(40.0),
-                            1: FixedColumnWidth(200.0),
-                            2: FixedColumnWidth(80.0),
+                            0: FixedColumnWidth(30.0),
+                            1: FixedColumnWidth(180.0),
+                            3: FixedColumnWidth(80.0),
                           },
                           children: [
                             for (var row in tableRows
@@ -373,7 +373,7 @@ class _ResultState extends State<Result> {
                 Center(
                   child: AppText(
                     text: "Courbe énergetque",
-                    color: Theme.of(context).unselectedWidgetColor,
+                    color: Theme.of(context).hintColor,
                   ),
                 ),
                 sizedbox,
@@ -408,7 +408,7 @@ class _ResultState extends State<Result> {
                   Center(
                     child: AppText(
                       text: 'Courbe des Revenus nets générés',
-                      color: Theme.of(context).unselectedWidgetColor,
+                      color: Theme.of(context).hintColor,
                     ),
                   ),
                 if (widget.isBudget) sizedbox,
