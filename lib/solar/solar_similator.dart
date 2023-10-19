@@ -35,6 +35,8 @@ class _SolarPageState extends State<SolarPage> {
   TextEditingController pannelVoltage = TextEditingController();
   TextEditingController pannelCurrent = TextEditingController();
   TextEditingController pannelPower = TextEditingController();
+  TextEditingController pannelHeight = TextEditingController();
+  TextEditingController pannelWidth = TextEditingController();
   TextEditingController battCap = TextEditingController();
   TextEditingController battVoltage = TextEditingController();
   TextEditingController ondPower = TextEditingController();
@@ -64,6 +66,7 @@ class _SolarPageState extends State<SolarPage> {
   late double seriePannel;
   late double pannelSerie;
   late int numberPannel;
+  late double allSize;
   late double capacityBatt;
   late double serieBatt;
   late double battSerie;
@@ -168,7 +171,7 @@ class _SolarPageState extends State<SolarPage> {
                 Navigator.of(context).pop();
               },
             ),
-            largeTitle:  Text(
+            largeTitle: Text(
               'Energie Solaire PV',
               style: TextStyle(
                 color: Theme.of(context).hintColor,
@@ -252,6 +255,8 @@ class _SolarPageState extends State<SolarPage> {
                           size: 16,
                         ),
                         sizedbox,
+                        textField("Puissance du PV (Wc)", pannelPower, 2),
+                        sizedbox,
                         Row(
                           children: [
                             Expanded(
@@ -264,7 +269,15 @@ class _SolarPageState extends State<SolarPage> {
                           ],
                         ),
                         sizedbox,
-                        textField("Puissance du PV (Wc)", pannelPower, 2),
+                        Row(children: [
+                          Expanded(
+                            child: textField("Taille: L(mm)", pannelHeight, 2),
+                          ),
+                          sizedbox2,
+                          Expanded(
+                            child: textField("l(mm)", pannelWidth, 2),
+                          ),
+                        ]),
                         if (!widget.isConnected) sizedbox,
                         if (!widget.isConnected)
                           AppTextLarge(
@@ -320,6 +333,43 @@ class _SolarPageState extends State<SolarPage> {
               ),
             ),
           if (isFinish2) cardResult(pannelResult, 3),
+          if (isFinish2)
+            SliverList(
+              delegate: SliverChildListDelegate(
+                [
+                 sizedbox,
+                  sizedbox,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Row(
+                      children: [
+                        AppText(
+                          text: "Champs solaire (m2) ",
+                          color: Theme.of(context).hintColor,
+                        ),
+                        sizedbox2,
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).focusColor,
+                              borderRadius: borderRadius,
+                            ),
+                            child: Center(
+                              child: AppTextLarge(
+                                text: allSize.toStringAsFixed(1),
+                                color: AppColors.activColor,
+                                size: 16, // new
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
           if (isFinish2)
             if (!widget.isConnected)
               SliverList(
@@ -408,10 +458,7 @@ class _SolarPageState extends State<SolarPage> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                width: 2,
-                                color:  AppColors.activColor
-
-                              ),
+                                  width: 2, color: AppColors.activColor),
                             ),
                             child: Container(
                               decoration: BoxDecoration(
@@ -481,10 +528,7 @@ class _SolarPageState extends State<SolarPage> {
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
-                                      width: 2,
-                                      color:  AppColors.activColor
-
-                                    ),
+                                        width: 2, color: AppColors.activColor),
                                   ),
                                   child: Container(
                                     decoration: BoxDecoration(
@@ -562,7 +606,7 @@ class _SolarPageState extends State<SolarPage> {
                           ),
                           child: Center(
                             child: AppTextLarge(
-                              text: cc.ceil().toString(),
+                              text: cc.toStringAsFixed(1),
                               color: AppColors.activColor,
                               size: 16, // new
                             ),
@@ -591,7 +635,7 @@ class _SolarPageState extends State<SolarPage> {
                           ),
                           child: Center(
                             child: AppTextLarge(
-                              text: ccPrice.ceil().toString(),
+                              text: ccPrice.toStringAsFixed(1),
                               color: AppColors.activColor,
                               size: 16, // new
                             ),
@@ -620,7 +664,7 @@ class _SolarPageState extends State<SolarPage> {
                           ),
                           child: Center(
                             child: AppTextLarge(
-                              text: ccAllPrice.ceil().toString(),
+                              text: ccAllPrice.toStringAsFixed(1),
                               color: AppColors.activColor,
                               size: 16, // new
                             ),
@@ -668,7 +712,7 @@ class _SolarPageState extends State<SolarPage> {
                       }
                     },
                     child: button(context, 'Commencer',
-                        CupertinoIcons.circle_grid_hex_fill),
+                        CupertinoIcons.rectangle_3_offgrid_fill),
                   ),
                 if (isFinish && !isFinish2)
                   GestureDetector(
@@ -677,12 +721,16 @@ class _SolarPageState extends State<SolarPage> {
                       if (widget.isConnected) {
                         if (pannelVoltage.text != "" &&
                             pannelPower.text != "" &&
+                            pannelHeight.text != "" &&
+                            pannelHeight.text != "" &&
                             ondPower.text != "" &&
                             ondVoltage.text != "") {
                           calcul02(
                             widget.isConnected,
                             double.parse(pannelVoltage.text),
                             double.parse(pannelPower.text),
+                            double.parse(pannelHeight.text),
+                            double.parse(pannelHeight.text),
                             !widget.isConnected
                                 ? double.parse(battCap.text)
                                 : 0.0,
@@ -699,6 +747,8 @@ class _SolarPageState extends State<SolarPage> {
                       } else {
                         if (pannelVoltage.text != "" &&
                             pannelPower.text != "" &&
+                            pannelHeight.text != "" &&
+                            pannelHeight.text != "" &&
                             ondPower.text != "" &&
                             ondVoltage.text != "" &&
                             battCap.text != "" &&
@@ -707,6 +757,8 @@ class _SolarPageState extends State<SolarPage> {
                             widget.isConnected,
                             double.parse(pannelVoltage.text),
                             double.parse(pannelPower.text),
+                            double.parse(pannelHeight.text),
+                            double.parse(pannelHeight.text),
                             !widget.isConnected
                                 ? double.parse(battCap.text)
                                 : 0.0,
@@ -723,7 +775,7 @@ class _SolarPageState extends State<SolarPage> {
                       }
                     },
                     child: button(context, 'Continuer',
-                        CupertinoIcons.circle_grid_hex_fill),
+                        CupertinoIcons.rectangle_3_offgrid_fill),
                   ),
                 if (isFinish2 && !isFinish3)
                   GestureDetector(
@@ -777,7 +829,7 @@ class _SolarPageState extends State<SolarPage> {
                       }
                     },
                     child: button(context, 'Continuer',
-                        CupertinoIcons.circle_grid_hex_fill),
+                        CupertinoIcons.rectangle_3_offgrid_fill),
                   ),
                 if (isFinish3)
                   GestureDetector(
@@ -864,6 +916,11 @@ class _SolarPageState extends State<SolarPage> {
                                     'icon': CupertinoIcons.time,
                                   },
                                   autonomyMap,
+                              {
+                                'name': "Puissance du panneaux  (W)",
+                                'value': pannelPower.text,
+                                'icon': Icons.solar_power,
+                              },
                                   {
                                     'name': "Tension du panneaux(V)",
                                     'value': pannelVoltage.text,
@@ -874,11 +931,12 @@ class _SolarPageState extends State<SolarPage> {
                                     'value': pannelCurrent.text,
                                     'icon': Icons.solar_power,
                                   },
-                                  {
-                                    'name': "Puissance du panneaux  (W)",
-                                    'value': pannelPower.text,
-                                    'icon': Icons.solar_power,
-                                  }
+                              {
+                                'name': "Taille du panneau (mm)",
+                                'value': "${pannelHeight.text} x ${pannelWidth.text}",
+                                'icon': Icons.photo_size_select_small_rounded,
+                              }
+
                                 ] +
                                 batt +
                                 [
@@ -905,6 +963,12 @@ class _SolarPageState extends State<SolarPage> {
                                   }
                                 ],
                             resultDivice: pannelResult +
+                                [{
+                                  'name': "Champs solaire (m2)",
+                                  'value': allSize.toStringAsFixed(1),
+                                  'icon': Icons.photo_size_select_small_rounded,
+                                }
+                                ]+
                                 battResult +
                                 [
                                   {
@@ -917,17 +981,17 @@ class _SolarPageState extends State<SolarPage> {
                             resultEnv: [
                               {
                                 'name': "Crédits carbone produits par an",
-                                'value': cc.ceil().toString(),
+                                'value': cc.toStringAsFixed(1),
                                 'icon': CupertinoIcons.tree,
                               },
                               {
                                 'name': "Rémunération carbone (\$/an)",
-                                'value': ccPrice.ceil().toString(),
+                                'value': ccPrice.toStringAsFixed(1),
                                 'icon': CupertinoIcons.money_dollar_circle,
                               },
                               {
                                 'name': "Rémunération carbone total (\$)",
-                                'value': ccAllPrice.ceil().toString(),
+                                'value': ccAllPrice.toStringAsFixed(1),
                                 'icon': CupertinoIcons.money_dollar_circle,
                               }
                             ],
@@ -953,7 +1017,10 @@ class _SolarPageState extends State<SolarPage> {
 //calculs des paramètre clé
 
   calcul01(double power, double hour, int autonomy, double ir) {
-    double n = 0.25; // constante en % qui tient compte de differents rendement
+    double n =
+        0.20; // constante en % qui tient compte d'un augmentation quelconque de la charge
+    double k =
+        0.65; // coefficient k qui prends en compte l'inclinaison , le rendement ,...
     double cp = 0.9; // coefficient de perte
     double cosphi = 0.8;
 
@@ -963,7 +1030,7 @@ class _SolarPageState extends State<SolarPage> {
 
     // calcul de l'energie à produire
 
-    energyPro = energy + (energy * n);
+    energyPro = (energy + (energy * n)) / k;
     debugPrint("l'energie à produite est ${energyPro.toString()}");
 
     //calcul de la puissance crete du champ PHOTOVOLAÏQUE
@@ -1027,12 +1094,15 @@ class _SolarPageState extends State<SolarPage> {
     bool isConnected,
     double pannelVoltage,
     // double pannelCurrent,
+    double pannelHeight,
+    double pannelWidth,
     double pannelPower,
     double battCap,
     double battVoltage,
     double ondPower,
     double ondVoltage,
   ) {
+    double securitySize = 5; // dimension de securité pour un panneau en  mm
     //calculs sur les panneaux
 
     seriePannel = powerCrete /
@@ -1046,6 +1116,13 @@ class _SolarPageState extends State<SolarPage> {
     numberPannel = seriePannel.ceil() *
         pannelSerie.ceil(); // calcul des nombres des panneaux
     debugPrint("les nombres des panneaux est ${numberPannel.toString()}");
+
+    double size = ((pannelHeight +
+        securitySize)/1000) * ((pannelWidth +
+        securitySize)/1000); //calcul de la dimmension d'un panneau
+    allSize = size * numberPannel; //calcul du champ solaire
+
+    debugPrint("La taille du champ solaire est ${allSize.toString()}");
 
     if (!isConnected) {
       //calculs sur les batteries
@@ -1186,8 +1263,9 @@ class _SolarPageState extends State<SolarPage> {
 
     cc = double.parse(power.text) / 1000;
     ccPrice = cc * priceCc;
-    ccAllPrice = ccPrice * times;
 
+    ccAllPrice = ccPrice * (times == 0? 1:times);
+    print(ccAllPrice);
     // Enregistrement des données
     List names = [
       "Coût total d'investissement",

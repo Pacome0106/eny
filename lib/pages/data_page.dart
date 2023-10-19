@@ -163,7 +163,7 @@ class _DataPageState extends State<DataPage> {
                       child: Icon(
                         CupertinoIcons.search,
                         color: AppColors.activColor,
-                        size: 30,
+                        size: 25,
                       ),
                     ),
                     GestureDetector(
@@ -229,7 +229,7 @@ class _DataPageState extends State<DataPage> {
                                                         Icons.close,
                                                         color: AppColors
                                                             .poweroffColor,
-                                                        size: 30,
+                                                        size: 25,
                                                       ),
                                                     )
                                                   ]),
@@ -478,7 +478,7 @@ class _DataPageState extends State<DataPage> {
                       child: const Icon(
                         CupertinoIcons.settings,
                         color: AppColors.activColor,
-                        size: 30,
+                        size: 25,
                       ),
                     ),
                   ],
@@ -524,7 +524,7 @@ class _DataPageState extends State<DataPage> {
                                   Icon(
                                     CupertinoIcons.globe,
                                     color: AppColors.activColor,
-                                    size: 30,
+                                    size: 25,
                                   ),
                                 ],
                               ),
@@ -621,29 +621,32 @@ class _DataPageState extends State<DataPage> {
                                         color: AppColors.activColor)),
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      left: 20, right: 20, top: 20, bottom: 5),
+                                      left: 10, right: 10, top: 10),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                         margin:
-                                            const EdgeInsets.only(bottom: 15),
+                                            const EdgeInsets.only(bottom: 10),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
-                                                CircularProgressIndicator(
-                                                  color: AppColors.activColor,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .hoverColor,
-                                                  value: data[0]['sales'] / 100,
-                                                  strokeWidth: 6,
+                                                SizedBox(
+                                                  height : 30,
+                                                  width: 30,
+                                                  child: CircularProgressIndicator(
+                                                    color: AppColors.activColor,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .hoverColor,
+                                                    value: data[0]['sales'] / 100,
+                                                    strokeWidth: 6,
+                                                  ),
                                                 ),
-                                                sizedbox2,
                                                 sizedbox2,
                                                 AppText(
                                                   text: "Superficie: ",
@@ -672,22 +675,25 @@ class _DataPageState extends State<DataPage> {
                                       ),
                                       Container(
                                         margin:
-                                            const EdgeInsets.only(bottom: 15),
+                                            const EdgeInsets.only(bottom: 10),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
-                                                CircularProgressIndicator(
-                                                  color: AppColors.activColor,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .hoverColor,
-                                                  value: data[1]['sales'] / 100,
-                                                  strokeWidth: 6,
+                                                SizedBox(
+                                                  height : 30,
+                                                  width: 30,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors.red,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .hoverColor,
+                                                    value: data[1]['sales'] / 100,
+                                                    strokeWidth: 6,
+                                                  ),
                                                 ),
-                                                sizedbox2,
                                                 sizedbox2,
                                                 AppText(
                                                   text: "Population: ",
@@ -716,22 +722,25 @@ class _DataPageState extends State<DataPage> {
                                       ),
                                       Container(
                                         margin:
-                                            const EdgeInsets.only(bottom: 15),
+                                            const EdgeInsets.only(bottom: 10),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
-                                                CircularProgressIndicator(
-                                                  color: AppColors.activColor,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .hoverColor,
-                                                  value: data[2]['sales'] / 100,
-                                                  strokeWidth: 6,
+                                                SizedBox(
+                                                  height : 30,
+                                                  width: 30,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors.blueAccent,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .hoverColor,
+                                                    value: data[2]['sales'] / 100,
+                                                    strokeWidth: 6,
+                                                  ),
                                                 ),
-                                                sizedbox2,
                                                 sizedbox2,
                                                 AppText(
                                                   text: "Densité: ",
@@ -759,22 +768,25 @@ class _DataPageState extends State<DataPage> {
                                       ),
                                       Container(
                                         margin:
-                                            const EdgeInsets.only(bottom: 15),
+                                            const EdgeInsets.only(bottom: 10),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(
                                               children: [
-                                                CircularProgressIndicator(
-                                                  color: AppColors.activColor,
-                                                  backgroundColor:
-                                                      Theme.of(context)
-                                                          .hoverColor,
-                                                  value: data[3]['sales'] / 100,
-                                                  strokeWidth: 6,
+                                                SizedBox(
+                                                  height : 30,
+                                                  width: 30,
+                                                  child: CircularProgressIndicator(
+                                                    color: Colors.orange,
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .hoverColor,
+                                                    value: data[3]['sales'] / 100,
+                                                    strokeWidth: 6,
+                                                  ),
                                                 ),
-                                                sizedbox2,
                                                 sizedbox2,
                                                 AppText(
                                                   text:
@@ -826,24 +838,27 @@ class _DataPageState extends State<DataPage> {
                             ),
                             child: Padding(
                               padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 20, bottom: 5),
+                                  left: 10, right: 10, top: 10),
                               child: Column(
                                 children: [
                                   Container(
-                                    margin: const EdgeInsets.only(bottom: 15),
+                                    margin: const EdgeInsets.only(bottom: 10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            CircularProgressIndicator(
-                                              backgroundColor:
-                                                  Theme.of(context).hoverColor,
-                                              value: 0,
-                                              strokeWidth: 6,
+                                            SizedBox(
+                                              height : 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor:
+                                                    Theme.of(context).hoverColor,
+                                                value: 0,
+                                                strokeWidth: 6,
+                                              ),
                                             ),
-                                            sizedbox2,
                                             sizedbox2,
                                             Container(
                                               height: 14,
@@ -868,20 +883,23 @@ class _DataPageState extends State<DataPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.only(bottom: 15),
+                                    margin: const EdgeInsets.only(bottom: 10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            CircularProgressIndicator(
-                                              backgroundColor:
-                                                  Theme.of(context).hoverColor,
-                                              value: 0,
-                                              strokeWidth: 6,
+                                            SizedBox(
+                                              height : 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor:
+                                                    Theme.of(context).hoverColor,
+                                                value: 0,
+                                                strokeWidth: 6,
+                                              ),
                                             ),
-                                            sizedbox2,
                                             sizedbox2,
                                             Container(
                                               height: 14,
@@ -906,20 +924,23 @@ class _DataPageState extends State<DataPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.only(bottom: 15),
+                                    margin: const EdgeInsets.only(bottom: 10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            CircularProgressIndicator(
-                                              backgroundColor:
-                                                  Theme.of(context).hoverColor,
-                                              value: 0,
-                                              strokeWidth: 6,
+                                            SizedBox(
+                                              height : 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor:
+                                                    Theme.of(context).hoverColor,
+                                                value: 0,
+                                                strokeWidth: 6,
+                                              ),
                                             ),
-                                            sizedbox2,
                                             sizedbox2,
                                             Container(
                                               height: 14,
@@ -944,20 +965,23 @@ class _DataPageState extends State<DataPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: const EdgeInsets.only(bottom: 15),
+                                    margin: const EdgeInsets.only(bottom: 10),
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            CircularProgressIndicator(
-                                              backgroundColor:
-                                                  Theme.of(context).hoverColor,
-                                              value: 0,
-                                              strokeWidth: 6,
+                                            SizedBox(
+                                              height : 30,
+                                              width: 30,
+                                              child: CircularProgressIndicator(
+                                                backgroundColor:
+                                                    Theme.of(context).hoverColor,
+                                                value: 0,
+                                                strokeWidth: 6,
+                                              ),
                                             ),
-                                            sizedbox2,
                                             sizedbox2,
                                             Container(
                                               height: 14,

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:100479903123:android:8a200da79ff4e19256b466",
+        "mobilesdk_app_id": "1:100479903123:android:1be4cc78f4c508a356b466",
         "android_client_info": {
-          "package_name": "com.example.eny"
+          "package_name": "com.bitz.eny"
         }
       },
       "oauth_client": [],

@@ -253,7 +253,7 @@ class _ResultState extends State<Result> {
                         },
                         children: [
                           for (var row in tableRows.sublist(
-                              3, widget.isConnected ? 8 : 10))
+                              3, widget.isConnected ? 9 : 11))
                             tableau(row),
 
                           // Existing rows
@@ -297,7 +297,7 @@ class _ResultState extends State<Result> {
                           },
                           children: [
                             for (var row in tableRows
-                                .sublist(widget.isConnected ? 9 : 10))
+                                .sublist(widget.isConnected ? 10 : 11))
                               tableau(row),
 
                             // Existing rows
