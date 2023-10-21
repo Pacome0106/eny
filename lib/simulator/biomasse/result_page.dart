@@ -4,44 +4,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
-import '../widgets/app_text_large.dart';
-import '../widgets/colors.dart';
+import '../../widgets/app_text_large.dart';
+import '../../widgets/colors.dart';
 
-class Result extends StatefulWidget {
-  const Result({
+
+class ResultBiomasse extends StatefulWidget {
+  const ResultBiomasse({
     super.key,
     required this.enter,
     required this.resultEnergy,
-    required this.resultDivice,
     required this.resultBudget,
     required this.resultEnv,
     required this.priceU,
     required this.energyU,
-    required this.isConnected,
-    required this.isBudget,
   });
 
   final List enter;
   final List resultEnergy;
-  final List resultDivice;
   final List resultBudget;
   final List resultEnv;
   final double priceU;
   final double energyU;
-  final bool isConnected;
-  final bool isBudget;
 
   @override
-  State<Result> createState() => _ResultState();
+  State<ResultBiomasse> createState() => _ResultBiomasseState();
 }
 
-class _ResultState extends State<Result> {
+class _ResultBiomasseState extends State<ResultBiomasse> {
   EdgeInsetsGeometry padding = const EdgeInsets.all(5);
   List tableRows = [];
   List tableRows1 = [];
   List tableRows2 = [];
   List tableRows3 = [];
-  List tableRows4 = [];
 
   table(List tables) {
     return Table(
@@ -126,9 +120,9 @@ class _ResultState extends State<Result> {
         child: Padding(
           padding: padding,
           child: AppText(
-              text: row['Designation'],
-              color: Theme.of(context).hintColor,
-             ),
+            text: row['Designation'],
+            color: Theme.of(context).hintColor,
+          ),
         ),
       ),
       TableCell(
@@ -136,9 +130,9 @@ class _ResultState extends State<Result> {
           child: Container(
             padding: padding,
             child: AppText(
-                text: row['Value'],
-                color: Theme.of(context).hintColor,
-              ),
+              text: row['Value'],
+              color: Theme.of(context).hintColor,
+            ),
           ),
         ),
       ),
@@ -159,12 +153,10 @@ class _ResultState extends State<Result> {
     generateTableRows(
       widget.enter,
       widget.resultEnergy,
-      widget.resultDivice,
       widget.resultBudget,
       widget.resultEnv,
       widget.enter.length,
       widget.resultEnergy.length,
-      widget.resultDivice.length,
       widget.resultBudget.length,
       widget.resultEnv.length,
     );
@@ -216,93 +208,7 @@ class _ResultState extends State<Result> {
                         ),
                       ),
                       sizedbox,
-                      table(tableRows.sublist(0, widget.isConnected ? 2 : 3)),
-                      Table(
-                        key: GlobalKey(),
-                        border: TableBorder.all(
-                          width: 0.3,
-                          color: Theme.of(context).hintColor,
-                        ),
-                        children: [
-                          TableRow(
-                            children: [
-                              TableCell(
-                                child: Center(
-                                  child: AppTextLarge(
-                                    text: 'Caracteristiques des Materiels',
-                                    color: Theme.of(context).hintColor,
-                                    size: 16,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          // Existing rows
-                        ],
-                      ),
-                      Table(
-                        key: GlobalKey(),
-                        border: TableBorder.all(
-                          width: 0.3,
-                          color: Theme.of(context).hintColor,
-                        ),
-                        columnWidths: const {
-                          0: FixedColumnWidth(30.0),
-                          1: FixedColumnWidth(180.0),
-                          3: FixedColumnWidth(80.0),
-                        },
-                        children: [
-                          for (var row in tableRows.sublist(
-                              3, widget.isConnected ? 9 : 11))
-                            tableau(row),
-
-                          // Existing rows
-                        ],
-                      ),
-                      if (widget.isBudget)
-                        Table(
-                          key: GlobalKey(),
-                          border: TableBorder.all(
-                            width: 0.3,
-                            color: Theme.of(context).hintColor,
-                          ),
-                          children: [
-                            TableRow(
-                              children: [
-                                TableCell(
-                                  child: Center(
-                                    child: AppTextLarge(
-                                      text: 'Bugdet',
-                                      color: Theme.of(context).hintColor,
-                                      size: 16,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            // Existing rows
-                          ],
-                        ),
-                      if (widget.isBudget)
-                        Table(
-                          key: GlobalKey(),
-                          border: TableBorder.all(
-                            width: 0.3,
-                            color: Theme.of(context).hintColor,
-                          ),
-                          columnWidths: const {
-                            0: FixedColumnWidth(30.0),
-                            1: FixedColumnWidth(180.0),
-                            3: FixedColumnWidth(80.0),
-                          },
-                          children: [
-                            for (var row in tableRows
-                                .sublist(widget.isConnected ? 10 : 11))
-                              tableau(row),
-
-                            // Existing rows
-                          ],
-                        ),
+                      table(tableRows),
                       sizedbox,
                       sizedbox,
                       Padding(
@@ -325,18 +231,6 @@ class _ResultState extends State<Result> {
                       table(tableRows1),
                       sizedbox,
                       sizedbox,
-                      Center(
-                        child: AppTextLarge(
-                          text: "Materiels Energetiques",
-                          color: Theme.of(context).hintColor,
-                          size: 16,
-                        ),
-                      ),
-                      sizedbox,
-                      table(tableRows2),
-                      if (widget.isBudget) sizedbox,
-                      if (widget.isBudget) sizedbox,
-                      if (widget.isBudget)
                         Center(
                           child: AppTextLarge(
                             text: "Budget",
@@ -344,8 +238,8 @@ class _ResultState extends State<Result> {
                             size: 16,
                           ),
                         ),
-                      if (widget.isBudget) sizedbox,
-                      if (widget.isBudget) table(tableRows3),
+                       sizedbox,
+                   table(tableRows2),
                       sizedbox,
                       sizedbox,
                       Center(
@@ -356,7 +250,7 @@ class _ResultState extends State<Result> {
                         ),
                       ),
                       sizedbox,
-                      table(tableRows4),
+                      table(tableRows3),
                     ],
                   ),
                 ),
@@ -404,15 +298,13 @@ class _ResultState extends State<Result> {
                   ),
                 ),
                 sizedbox,
-                if (widget.isBudget)
                   Center(
                     child: AppText(
                       text: 'Courbe des Revenus nets générés',
                       color: Theme.of(context).hintColor,
                     ),
                   ),
-                if (widget.isBudget) sizedbox,
-                if (widget.isBudget)
+             sizedbox,
                   Center(
                     child: SfCartesianChart(
                       primaryXAxis: CategoryAxis(title: AxisTitle(text: "ans")),
@@ -448,17 +340,15 @@ class _ResultState extends State<Result> {
   }
 
   void generateTableRows(
-    List value,
-    List value1,
-    List value2,
-    List value3,
-    List value4,
-    int rowCount,
-    int rowCount1,
-    int rowCount2,
-    int rowCount3,
-    int rowCount4,
-  ) {
+      List value,
+      List value1,
+      List value2,
+      List value3,
+      int rowCount,
+      int rowCount1,
+      int rowCount2,
+      int rowCount3,
+      ) {
     for (int i = 0; i < rowCount; i++) {
       tableRows.add({
         'Number': (i + 1).toString(),
@@ -492,20 +382,12 @@ class _ResultState extends State<Result> {
         'Icon': value3[i]['icon'],
       });
     }
-    for (int i = 0; i < rowCount4; i++) {
-      tableRows4.add({
-        'Number': (i + 1).toString(),
-        'Designation': value4[i]['name'],
-        'Value': value4[i]['value'],
-        'Icon': value4[i]['icon'],
-      });
-    }
   }
 
   String addSpaces(String value) {
     return value.replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-      (Match match) => '${match[1]} ',
+          (Match match) => '${match[1]} ',
     );
   }
 
@@ -525,7 +407,7 @@ class _ResultState extends State<Result> {
 
   List<SalesData> generateChartData() {
     List<SalesData> chartData = [];
-    if (widget.isBudget) {
+
       List time = [1, 2, 3.8, 5, 6.4, 7, 8, 10, 11, 13, 15];
       double priceTotal = 0;
 
@@ -534,7 +416,7 @@ class _ResultState extends State<Result> {
         // Calculer le paiement total
         priceTotal = widget.priceU * time[i];
         chartData.add(SalesData(year, priceTotal.round()));
-      }
+
     }
     return chartData;
   }

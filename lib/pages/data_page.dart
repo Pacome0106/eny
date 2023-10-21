@@ -7,7 +7,6 @@ import 'package:eny/widgets/colors.dart';
 import 'package:eny/widgets/lign.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:graphic/graphic.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/dark_theme_provider.dart';
@@ -110,11 +109,12 @@ class _DataPageState extends State<DataPage> {
                       padding: const EdgeInsets.only(right: 10),
                       child: CupertinoSearchTextField(
                         controller: textController,
+                        style: TextStyle(color: Theme.of(context).hintColor),
                         onChanged: (String value) {
                           provincesSearch = [];
                           for (int i = 0; i < provinces.length; i++) {
                             String string = provinces[i]['name'];
-                            if (string.contains(value.trim())) {
+                            if (string.contains(value.trim().toLowerCase())) {
                               provincesSearch.add(provinces[i]);
                             }
                           }

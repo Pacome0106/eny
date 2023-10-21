@@ -1,5 +1,5 @@
 allTime(double heures) {
-
+print(heures);
   // Conversion en années, mois, jours, heures, minutes et secondes
   int annees = (heures ~/ (24 * 365)).toInt();
   int mois = ((heures % (24 * 365)) ~/ (24 * 30)).toInt();
@@ -34,7 +34,7 @@ allTime(double heures) {
 }
 allTime2(double heures) {
 
-  // Conversion en années, mois, jours, heures, minutes et secondes
+  // Conversion en années, mois
   int annees = (heures ~/ (24 * 365)).toInt();
   int mois = ((heures % (24 * 365)) ~/ (24 * 30)).toInt();
 

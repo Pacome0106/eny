@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final newVersion = NewVersionPlus(
-      iOSId: 'com.disney.disneyplus',
+      iOSId: 'com.bitz.eny',
       androidId: 'com.bitz.eny',
       androidPlayStoreCountry: null,
       androidHtmlReleaseNotes: true, //support country code
@@ -47,8 +47,8 @@ class _HomePageState extends State<HomePage> {
       if (status.localVersion != status.storeVersion) {
         // debugPrint(status.releaseNotes);
         // debugPrint(status.appStoreLink);
-        debugPrint(status.localVersion);
-        debugPrint(status.storeVersion);
+        // debugPrint(status.localVersion);
+        // debugPrint(status.storeVersion);
         // debugPrint(status.canUpdate.toString());
         newVersion.showUpdateDialog(
           context: context,

@@ -1,5 +1,5 @@
 import 'package:eny/pages/home_page.dart';
-import 'package:eny/solar/result_page.dart';
+import 'package:eny/simulator/solar/result_page.dart';
 import 'package:eny/widgets/app_text.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:eny/widgets/card_result.dart';
@@ -8,8 +8,8 @@ import 'package:eny/widgets/time.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/button.dart';
-import '../widgets/colors.dart';
+import '../../widgets/button.dart';
+import '../../widgets/colors.dart';
 
 class SolarPage extends StatefulWidget {
   const SolarPage({
@@ -191,7 +191,7 @@ class _SolarPageState extends State<SolarPage> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
-                  child: textField("Heure d'utilisation (h)", hour, 1),
+                  child: textField("Heure d'utilisation (h/j)", hour, 1),
                 ),
                 if (!widget.isConnected)
                   Padding(
@@ -903,7 +903,7 @@ class _SolarPageState extends State<SolarPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Result(
+                          builder: (context) => ResultSolaire(
                             enter: [
                                   {
                                     'name': "Puissance installation (W)",
@@ -1220,7 +1220,11 @@ class _SolarPageState extends State<SolarPage> {
     int days = 365; //  nombre des jours par an
     double d =
         0.1; // pourcentage du coût de repayement pour trouve le priceExpl
-    double priceCc = 26.5;
+
+    double polutionCharbon = 850; //  la pollution du charbon par 1kWh en grammes
+    double polutionSolairePv = 55; // la pollution du panneau solaire par 1kWh en grammes
+    double priceCc = 33.5;
+
     if (widget.isConnected) {
       cti = (numberPannel * pricePannel) +
           (numberOnd.ceil() * priceOnd) +
@@ -1236,22 +1240,22 @@ class _SolarPageState extends State<SolarPage> {
     crp = (1 + (interestRate / 100)) * cti; // calcul du coût de repayement
     // --- je divise l'intérêt par 100 car elle sera donnée en poucentage
     debugPrint("le coût de repayement est ${crp.toString()}");
-
+    priceExpl = d * crp;
     rng =
-        (energy / 1000) * priceEnergy * days; // calcul du recette nette generer
+        ((energy / 1000) * priceEnergy * days)-priceExpl ; // calcul du recette nette generer
     debugPrint("la recette nette generer est ${rng.toString()}");
 
-    priceExpl = d * crp;
+
     if (isBudget) {
       tri = crp /
-          (rng - priceExpl); // calcul du temps de retour à l'investissement
+          rng ; // calcul du temps de retour à l'investissement
       debugPrint("le temps de retour à l'investissement est ${tri.toString()}");
 
       profitability =
-          ((rng - priceExpl) / crp) * 100; // calcul de la rentabilité
+          (rng  / crp) * 100; // calcul de la rentabilité
       debugPrint("la rentabilité est ${profitability.toString()}");
 
-      roi = ((((rng - priceExpl) * times) - crp) / crp) *
+      roi = (((rng * times) - crp) / crp) *
           100; // calcul du retour sur investissement
       debugPrint("le retour sur investissement est ${roi.toString()}");
     } else {
@@ -1261,7 +1265,7 @@ class _SolarPageState extends State<SolarPage> {
     }
     // calcul environnementaux
 
-    cc = double.parse(power.text) / 1000;
+    cc = ((polutionCharbon - polutionSolairePv)/1000000) * (energy/ 1000);
     ccPrice = cc * priceCc;
 
     ccAllPrice = ccPrice * (times == 0? 1:times);

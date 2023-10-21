@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eny/pages/home_page.dart';
-import 'package:eny/solar/solar_similator.dart';
+import 'package:eny/simulator/biomasse/biomasse_simulator.dart';
 import 'package:eny/widgets/app_text_large.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../simulator/solar/solar_similator.dart';
 import '../widgets/app_text.dart';
 import '../widgets/colors.dart';
 
@@ -50,10 +51,10 @@ class _SimulatorPageState extends State<SimulatorPage> {
     return CustomScrollView(slivers: [
       CupertinoSliverNavigationBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        largeTitle:  Text(
+        largeTitle: Text(
           'Simulateur',
           style: TextStyle(
-            color:   Theme.of(context).hintColor,
+            color: Theme.of(context).hintColor,
             fontFamily: 'Montserrat',
             fontWeight: FontWeight.w900,
           ),
@@ -61,7 +62,6 @@ class _SimulatorPageState extends State<SimulatorPage> {
         stretch: true,
         border: const Border(),
       ),
-
       SliverGrid(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 350.0,
@@ -143,7 +143,8 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                                             SolarPage(
                                                           title: enr,
                                                           isConnected: false,
-                                                          irradiation:  double.parse(ir),
+                                                          irradiation:
+                                                              double.parse(ir),
                                                         ),
                                                       ),
                                                     );
@@ -154,8 +155,8 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                                             left: 8, right: 8),
                                                     alignment: Alignment.center,
                                                     decoration: BoxDecoration(
-                                                      borderRadius:borderRadius,
-
+                                                      borderRadius:
+                                                          borderRadius,
                                                       border: Border.all(
                                                         color: AppColors
                                                             .activColor,
@@ -183,7 +184,8 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                                             SolarPage(
                                                           title: enr,
                                                           isConnected: true,
-                                                          irradiation: double.parse(ir),
+                                                          irradiation:
+                                                              double.parse(ir),
                                                         ),
                                                       ),
                                                     );
@@ -216,6 +218,14 @@ class _SimulatorPageState extends State<SimulatorPage> {
                                           );
                                         },
                                       );
+                                    } else if (enr == "biomasse") {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BiomaseSimilator(),
+                                        ),
+                                      );
                                     }
                                   },
                                   child: Container(
@@ -245,9 +255,7 @@ class _SimulatorPageState extends State<SimulatorPage> {
                               Navigator.of(context).pop();
                             },
                             child: Container(
-                              padding:
-                              const EdgeInsets.only(
-                                  left: 8, right: 8),
+                              padding: const EdgeInsets.only(left: 8, right: 8),
                               height: 30,
                               width: 80,
                               alignment: Alignment.center,
@@ -276,10 +284,11 @@ class _SimulatorPageState extends State<SimulatorPage> {
                       alignment: Alignment.topLeft,
                       height: 200,
                       decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Theme.of(context).focusColor,
-                    border:isData? Border.all(color: AppColors.activColor):Border()
-                      ),
+                          borderRadius: BorderRadius.circular(20),
+                          color: Theme.of(context).focusColor,
+                          border: isData
+                              ? Border.all(color: AppColors.activColor)
+                              : Border()),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
