@@ -19,10 +19,12 @@ class DetailProvince extends StatefulWidget {
     super.key,
     required this.tag,
     required this.data,
+    required this.density,
   });
 
   final String tag;
   final data;
+  final String density;
 
   @override
   State<DetailProvince> createState() => _DetailProvinceState();
@@ -192,7 +194,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                               urlTemplate:
                                   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                               subdomains: const ['a', 'b', 'c'],
-                              userAgentPackageName: 'com.example.eny',
+                              userAgentPackageName: 'com.bitz.eny',
                             ),
                           ],
                         ),
@@ -338,7 +340,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                         child: AppTextLarge(
                                           text: '${addSpaces(
                                             widget.data['population'],
-                                          )} habitants',
+                                          )} hab',
                                           color: AppColors.activColor,
                                           size: 16,
                                         ),
@@ -358,8 +360,7 @@ class _DetailProvinceState extends State<DetailProvince> {
                                         children: [
                                           Center(
                                             child: AppTextLarge(
-                                              text:
-                                                  '${widget.data['density']} hab/km²',
+                                              text: '${widget.density} hab/km²',
                                               color: AppColors.activColor,
                                               size: 16,
                                             ),

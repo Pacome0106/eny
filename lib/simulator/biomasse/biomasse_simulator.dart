@@ -671,7 +671,7 @@ class _BiomaseSimilatorState extends State<BiomaseSimilator> {
     double pricePerson =
         0.1; // coût du personnel exploitant qui est de 10% le coût total investi
     int days = 365; //  nombre des jours par an
-    double CFI = 0.0;
+    double CFI = 0.0; //coût fixe investi
     double priceExpl = 0.0; // coût d'exploitation par an d'une centrale solaire
     double priceCc = 33.5;
     double ccLitle = 2.67; // 1l de biodiesel evite 2.67 kg de co2 dans la nature qui peux etre produit par le diesel
@@ -687,12 +687,13 @@ class _BiomaseSimilatorState extends State<BiomaseSimilator> {
     maintPrice = priceGen * priceMaint;
     debugPrint("Coût  de la maintenance du generateur $maintPrice");
 
-    CFI = otherPrice + priceGen + cons * priceLitle;
+    CFI = otherPrice + priceGen + (cons * priceLitle);
 
     personPrice = CFI * pricePerson;
     debugPrint("Coût  du personnel exploitant $personPrice");
 
-    priceExpl = ((personPrice + maintPrice) * 12) + (cons * priceLitle * days);
+    priceExpl = personPrice + maintPrice  + (cons * priceLitle * days);
+
     debugPrint("la  ${priceExpl.toString()}");
 
     cti = CFI + priceExpl;
@@ -718,7 +719,7 @@ class _BiomaseSimilatorState extends State<BiomaseSimilator> {
 
     // calcul environnementaux
 
-    cc = ((litleOnhour * hour * days)/1000) ;
+    cc = ((cons * days * ccLitle )/1000) ;
     ccPrice = cc * priceCc;
 
     ccAllPrice = ccPrice * (times == 0? 1:times);

@@ -62,14 +62,24 @@ class _SimulatorPageState extends State<SimulatorPage> {
         stretch: true,
         border: const Border(),
       ),
-      SliverGrid(
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 350.0,
-          mainAxisSpacing: 0,
-          childAspectRatio: 1,
-          mainAxisExtent: 250,
+      SliverList(
+        delegate: SliverChildListDelegate(
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: AppTextLarge(
+                text: "Région de simulation",
+                color: Theme.of(context).hintColor,
+                size: 16,
+              ),
+            ),
+            sizedbox,
+          ],
         ),
+      ),
+      SliverList(
         delegate: SliverChildBuilderDelegate(
+          childCount: isData ? simProvinces.length : 10,
           (context, index) => Hero(
             tag: '$index',
             child: GestureDetector(
@@ -277,146 +287,112 @@ class _SimulatorPageState extends State<SimulatorPage> {
                 }
               },
               child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: Column(
                   children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      height: 200,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: Theme.of(context).focusColor,
                           border: isData
                               ? Border.all(color: AppColors.activColor)
                               : Border()),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 15, left: 15, right: 15),
-                            child: isData
-                                ? Text(
-                                    "Types d'énergies: ",
-                                    style: TextStyle(
-                                        color: Theme.of(context).disabledColor,
-                                        fontSize: 16,
-                                        fontFamily: 'Nunito',
-                                        fontWeight: FontWeight.w900,
-                                        letterSpacing: 0),
-                                    softWrap: false,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis, // new
-                                  )
-                                : Container(
-                                    height: 14,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: isData
+                            ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 10,
+                                        backgroundColor: AppColors.activColor,
+                                      ),
+                                      sizedbox2,
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 3),
+                                        child: Text(
+                                          simProvinces[index]['name'][0]
+                                                  .toUpperCase() +
+                                              simProvinces[index]['name']
+                                                  .substring(1),
+                                          style: TextStyle(
+                                              color:
+                                                  Theme.of(context).hintColor,
+                                              fontSize: 14,
+                                              fontFamily: 'Nunito',
+                                              letterSpacing: 0),
+                                          softWrap: false,
+                                          maxLines: 1,
+                                          overflow:
+                                              TextOverflow.ellipsis, // new
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).canvasColor,
+                                      borderRadius: borderRadius,
+                                    ),
+                                    child: Icon(
+                                      CupertinoIcons
+                                          .rectangle_fill_on_rectangle_fill,
+                                      color: Theme.of(context)
+                                          .unselectedWidgetColor,
+                                      size: 20,
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                   width: 200,
+                                    height: 30,
+                                    alignment: Alignment.centerLeft,
                                     decoration: BoxDecoration(
                                       borderRadius: borderRadius,
                                       color: Theme.of(context).hoverColor,
                                     ),
+                                    child: Container(
+                                      height: 20,
+                                      width: 20,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Theme.of(context).hintColor,
+                                        border: Border.all(
+                                          color: Theme.of(context).backgroundColor,
+                                          width: 2,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                          ),
-                          sizedbox,
-                          Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: ListView.builder(
-                                  itemCount: isData
-                                      ? simProvinces[index]['energy'].length
-                                      : 5,
-                                  itemBuilder: (context, i) {
-                                    String enr = '';
-                                    if (isData) {
-                                      enr = simProvinces[index]['energy'][i];
-                                    }
-                                    return isData
-                                        ? Text(
-                                            "  • ${enr[0].toUpperCase() + enr.substring(1)}",
-                                            style: TextStyle(
-                                                color:
-                                                    Theme.of(context).cardColor,
-                                                fontSize: 14,
-                                                fontFamily: 'Nunito',
-                                                decoration: TextDecoration.none,
-                                                letterSpacing: 0),
-                                            softWrap: false,
-                                            maxLines: 3,
-                                            overflow:
-                                                TextOverflow.ellipsis, // new
-                                          )
-                                        : Container(
-                                            height: 16,
-                                            margin: const EdgeInsets.only(
-                                                left: 10, right: 25, top: 5),
-                                            decoration: BoxDecoration(
-                                              borderRadius: borderRadius,
-                                              color:
-                                                  Theme.of(context).hoverColor,
-                                            ),
-                                          );
-                                  }),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 5, left: 10, right: 10),
-                      child: isData
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 3),
-                                  child: Text(
-                                    simProvinces[index]['name'][0]
-                                            .toUpperCase() +
-                                        simProvinces[index]['name']
-                                            .substring(1),
-                                    style: TextStyle(
-                                        color: Theme.of(context).cardColor,
-                                        fontSize: 16,
-                                        fontFamily: 'Nunito',
-                                        letterSpacing: 0),
-                                    softWrap: false,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis, // new
+                                Container(
+                                  height: 30,
+                                  width: 30,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).canvasColor,
+                                    borderRadius: borderRadius,
                                   ),
                                 ),
-                                CircleAvatar(
-                                  radius: 5,
-                                  backgroundColor: Theme.of(context).hintColor,
-                                )
                               ],
-                            )
-                          : Container(
-                              alignment: Alignment.centerRight,
-                              decoration: BoxDecoration(
-                                borderRadius: borderRadius,
-                                color: Theme.of(context).hoverColor,
-                              ),
-                              child: Container(
-                                height: 14,
-                                width: 14,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context).hintColor,
-                                  border: Border.all(
-                                    color: Theme.of(context).backgroundColor,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
                             ),
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
           ),
-          childCount: isData ? simProvinces.length : 10,
         ),
       ),
     ]);

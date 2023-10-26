@@ -507,6 +507,10 @@ class _DataPageState extends State<DataPage> {
                                     builder: (context) => DetailProvince(
                                       tag: "0",
                                       data: provinces[0],
+                                      density: (double.parse(provinces[0]['population']) /
+                                              double.parse(provinces[0]['superficial']))
+                                          .ceil()
+                                          .toString(),
                                     ),
                                   ),
                                 );
@@ -554,10 +558,19 @@ class _DataPageState extends State<DataPage> {
               {'category': 'Taux_electric', 'sales': 0},
             ];
             var provincesAll;
+            double density = 0.0;
+            double taux_electric = 0.0;
+
             if (isData) {
               provincesAll = !search
                   ? provinces.sublist(1)[index]
                   : provincesSearch[index];
+              density = double.parse(provincesAll['population']) /
+                  double.parse(provincesAll['superficial']);
+
+              taux_electric = (double.parse(provincesAll['puissance disponible']) /
+                  double.parse(provincesAll['puissance demandee']))* 100;
+
               double superficies = calculs(
                   double.parse(reference.first['superficial']),
                   double.parse(provincesAll['superficial']));
@@ -572,15 +585,12 @@ class _DataPageState extends State<DataPage> {
                 data[1]['sales'] = double.parse(population.toStringAsFixed(1));
               }
               if (data[2]['category'] == 'Density') {
-                data[2]['sales'] = double.parse(
-                    (double.parse(provincesAll['density']) / 100)
-                        .toStringAsFixed(1));
+                data[2]['sales'] =
+                    double.parse((density / 100).toStringAsFixed(1));
               }
               if (data[3]['category'] == 'Taux_electric') {
-                data[3]['sales'] = double.parse(
-                    provincesAll['taux d\'electrification'] == ''
-                        ? '0'
-                        : provincesAll['taux d\'electrification']);
+                data[3]['sales'] = double.parse(taux_electric.toStringAsFixed(1)
+                    );
               }
             }
             return Scrollbar(
@@ -595,6 +605,7 @@ class _DataPageState extends State<DataPage> {
                               builder: (context) => DetailProvince(
                                 tag: index.toString(),
                                 data: provincesAll,
+                                density: density.ceil().toString(),
                               ),
                             ),
                           );
@@ -636,14 +647,16 @@ class _DataPageState extends State<DataPage> {
                                             Row(
                                               children: [
                                                 SizedBox(
-                                                  height : 30,
+                                                  height: 30,
                                                   width: 30,
-                                                  child: CircularProgressIndicator(
+                                                  child:
+                                                      CircularProgressIndicator(
                                                     color: AppColors.activColor,
                                                     backgroundColor:
                                                         Theme.of(context)
                                                             .hoverColor,
-                                                    value: data[0]['sales'] / 100,
+                                                    value:
+                                                        data[0]['sales'] / 100,
                                                     strokeWidth: 6,
                                                   ),
                                                 ),
@@ -656,7 +669,7 @@ class _DataPageState extends State<DataPage> {
                                                 ),
                                                 AppTextLarge(
                                                   text: addSpaces(
-                                                    "${provincesAll['superficial']} km2",
+                                                    "${provincesAll['superficial']} km²",
                                                   ),
                                                   color: Theme.of(context)
                                                       .hintColor,
@@ -683,14 +696,16 @@ class _DataPageState extends State<DataPage> {
                                             Row(
                                               children: [
                                                 SizedBox(
-                                                  height : 30,
+                                                  height: 30,
                                                   width: 30,
-                                                  child: CircularProgressIndicator(
+                                                  child:
+                                                      CircularProgressIndicator(
                                                     color: Colors.red,
                                                     backgroundColor:
                                                         Theme.of(context)
                                                             .hoverColor,
-                                                    value: data[1]['sales'] / 100,
+                                                    value:
+                                                        data[1]['sales'] / 100,
                                                     strokeWidth: 6,
                                                   ),
                                                 ),
@@ -730,14 +745,16 @@ class _DataPageState extends State<DataPage> {
                                             Row(
                                               children: [
                                                 SizedBox(
-                                                  height : 30,
+                                                  height: 30,
                                                   width: 30,
-                                                  child: CircularProgressIndicator(
+                                                  child:
+                                                      CircularProgressIndicator(
                                                     color: Colors.blueAccent,
                                                     backgroundColor:
                                                         Theme.of(context)
                                                             .hoverColor,
-                                                    value: data[2]['sales'] / 100,
+                                                    value:
+                                                        data[2]['sales'] / 100,
                                                     strokeWidth: 6,
                                                   ),
                                                 ),
@@ -750,7 +767,7 @@ class _DataPageState extends State<DataPage> {
                                                 ),
                                                 AppTextLarge(
                                                   text:
-                                                      "${provincesAll['density']} hab/km3",
+                                                      "${density.ceil()} hab/km²",
                                                   color: Theme.of(context)
                                                       .hintColor,
                                                   size: 16,
@@ -776,14 +793,16 @@ class _DataPageState extends State<DataPage> {
                                             Row(
                                               children: [
                                                 SizedBox(
-                                                  height : 30,
+                                                  height: 30,
                                                   width: 30,
-                                                  child: CircularProgressIndicator(
+                                                  child:
+                                                      CircularProgressIndicator(
                                                     color: Colors.orange,
                                                     backgroundColor:
                                                         Theme.of(context)
                                                             .hoverColor,
-                                                    value: data[3]['sales'] / 100,
+                                                    value:
+                                                        data[3]['sales'] / 100,
                                                     strokeWidth: 6,
                                                   ),
                                                 ),
@@ -850,11 +869,12 @@ class _DataPageState extends State<DataPage> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              height : 30,
+                                              height: 30,
                                               width: 30,
                                               child: CircularProgressIndicator(
                                                 backgroundColor:
-                                                    Theme.of(context).hoverColor,
+                                                    Theme.of(context)
+                                                        .hoverColor,
                                                 value: 0,
                                                 strokeWidth: 6,
                                               ),
@@ -891,11 +911,12 @@ class _DataPageState extends State<DataPage> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              height : 30,
+                                              height: 30,
                                               width: 30,
                                               child: CircularProgressIndicator(
                                                 backgroundColor:
-                                                    Theme.of(context).hoverColor,
+                                                    Theme.of(context)
+                                                        .hoverColor,
                                                 value: 0,
                                                 strokeWidth: 6,
                                               ),
@@ -932,11 +953,12 @@ class _DataPageState extends State<DataPage> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              height : 30,
+                                              height: 30,
                                               width: 30,
                                               child: CircularProgressIndicator(
                                                 backgroundColor:
-                                                    Theme.of(context).hoverColor,
+                                                    Theme.of(context)
+                                                        .hoverColor,
                                                 value: 0,
                                                 strokeWidth: 6,
                                               ),
@@ -973,11 +995,12 @@ class _DataPageState extends State<DataPage> {
                                         Row(
                                           children: [
                                             SizedBox(
-                                              height : 30,
+                                              height: 30,
                                               width: 30,
                                               child: CircularProgressIndicator(
                                                 backgroundColor:
-                                                    Theme.of(context).hoverColor,
+                                                    Theme.of(context)
+                                                        .hoverColor,
                                                 value: 0,
                                                 strokeWidth: 6,
                                               ),
