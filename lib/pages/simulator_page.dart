@@ -18,11 +18,12 @@ class SimulatorPage extends StatefulWidget {
 
 class _SimulatorPageState extends State<SimulatorPage> {
   List simProvinces = [];
+  List simEnergy = ['solaire PV', 'biomasse'];
   bool isData = false;
 
   getSimProvince() async {
     await FirebaseFirestore.instance
-        .collection("simProvince")
+        .collection("provinces")
         .get()
         .then((value) {
       for (var province in value.docs) {
@@ -48,353 +49,372 @@ class _SimulatorPageState extends State<SimulatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: [
-      CupertinoSliverNavigationBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        largeTitle: Text(
-          'Simulateur',
-          style: TextStyle(
-            color: Theme.of(context).hintColor,
-            fontFamily: 'Montserrat',
-            fontWeight: FontWeight.w900,
+    return CustomScrollView(
+      slivers: [
+        CupertinoSliverNavigationBar(
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          largeTitle: Text(
+            'Simulateur',
+            style: TextStyle(
+              color: Theme.of(context).hintColor,
+              fontFamily: 'Montserrat',
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          stretch: true,
+          border: const Border(),
+        ),
+        SliverList(
+          delegate: SliverChildListDelegate(
+            [
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: AppTextLarge(
+                  text: "Région de simulation",
+                  color: Theme.of(context).hintColor,
+                  size: 16,
+                ),
+              ),
+              sizedbox,
+            ],
           ),
         ),
-        stretch: true,
-        border: const Border(),
-      ),
-      SliverList(
-        delegate: SliverChildListDelegate(
-          [
-            Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: AppTextLarge(
-                text: "Région de simulation",
-                color: Theme.of(context).hintColor,
-                size: 16,
-              ),
-            ),
-            sizedbox,
-          ],
-        ),
-      ),
-      SliverList(
-        delegate: SliverChildBuilderDelegate(
-          childCount: isData ? simProvinces.length : 10,
-          (context, index) => Hero(
-            tag: '$index',
-            child: GestureDetector(
-              onTap: () {
-                // Presentation de la selection de l'energie à simuler
-                if (isData) {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        backgroundColor: Theme.of(context).focusColor,
-                        title: Center(
-                          child: AppText(
-                            text: "Sélectionnez l'énergie à simuler",
-                            color: Theme.of(context).hintColor,
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+              childCount: isData ? simProvinces.sublist(1).length : 10,
+              (context, index) {
+            var simProvincesAll;
+            if (isData) {
+              simProvincesAll = simProvinces.sublist(1)[index];
+            }
+            return Hero(
+              tag: '$index',
+              child: GestureDetector(
+                onTap: () {
+                  // Presentation de la selection de l'energie à simuler
+                  if (isData) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Theme.of(context).focusColor,
+                          title: Center(
+                            child: AppText(
+                              text: "Sélectionnez l'énergie à simuler",
+                              color: Theme.of(context).hintColor,
+                            ),
                           ),
-                        ),
-                        content: SizedBox(
-                          width: double.maxFinite,
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: simProvinces[index]['energy'].length,
-                            itemBuilder: (BuildContext context, int x) {
-                              String enr = simProvinces[index]['energy'][x];
-                              String ir = simProvinces[index]['irradiation'];
-                              return Padding(
-                                padding: const EdgeInsets.all(3.0),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    print(x);
-                                    Navigator.of(context).pop();
-                                    if (enr == 'solaire PV') {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return AlertDialog(
-                                            backgroundColor:
-                                                Theme.of(context).focusColor,
-                                            insetPadding: const EdgeInsets.only(
-                                              left: 20,
-                                              right: 20,
-                                            ),
-                                            title: Center(
-                                              child: AppText(
-                                                text:
-                                                    'Sélectionnez le type de votre système',
-                                                color:
-                                                    Theme.of(context).hintColor,
+                          content: SizedBox(
+                            width: double.maxFinite,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: simEnergy.length,
+                              itemBuilder: (BuildContext context, int x) {
+                                String enr = simEnergy[x];
+                                String ir =
+                                    simProvincesAll['potentiel solaire'];
+                                return Padding(
+                                  padding: const EdgeInsets.all(3.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      print(x);
+                                      Navigator.of(context).pop();
+                                      if (enr == 'solaire PV') {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              backgroundColor:
+                                                  Theme.of(context).focusColor,
+                                              insetPadding:
+                                                  const EdgeInsets.only(
+                                                left: 20,
+                                                right: 20,
                                               ),
-                                            ),
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: borderRadius),
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                                    top: 20,
-                                                    bottom: 20,
-                                                    left: 10,
-                                                    right: 10),
-                                            content: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    //installation autonome
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            SolarPage(
-                                                          title: enr,
-                                                          isConnected: false,
-                                                          irradiation:
-                                                              double.parse(ir),
+                                              title: Center(
+                                                child: AppText(
+                                                  text:
+                                                      'Sélectionnez le type de votre système',
+                                                  color: Theme.of(context)
+                                                      .hintColor,
+                                                ),
+                                              ),
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: borderRadius),
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      top: 20,
+                                                      bottom: 20,
+                                                      left: 10,
+                                                      right: 10),
+                                              content: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      //installation autonome
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SolarPage(
+                                                            title: enr,
+                                                            isConnected: false,
+                                                            irradiation:
+                                                                double.parse(
+                                                                    ir),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8,
+                                                              right: 8),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            borderRadius,
+                                                        border: Border.all(
+                                                          color: AppColors
+                                                              .activColor,
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8, right: 8),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          borderRadius,
-                                                      border: Border.all(
+                                                      height: 30,
+                                                      width: 120,
+                                                      child: AppTextLarge(
+                                                        text: 'Autonome',
+                                                        size: 16,
                                                         color: AppColors
                                                             .activColor,
                                                       ),
                                                     ),
-                                                    height: 30,
-                                                    width: 120,
-                                                    child: AppTextLarge(
-                                                      text: 'Autonome',
-                                                      size: 16,
-                                                      color:
-                                                          AppColors.activColor,
-                                                    ),
                                                   ),
-                                                ),
-                                                sizedbox2,
-                                                sizedbox2,
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    //installation raccordée au reseau
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            SolarPage(
-                                                          title: enr,
-                                                          isConnected: true,
-                                                          irradiation:
-                                                              double.parse(ir),
+                                                  sizedbox2,
+                                                  sizedbox2,
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      //installation raccordée au reseau
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              SolarPage(
+                                                            title: enr,
+                                                            isConnected: true,
+                                                            irradiation:
+                                                                double.parse(
+                                                                    ir),
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 8,
+                                                              right: 8),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            borderRadius,
+                                                        border: Border.all(
+                                                          color: AppColors
+                                                              .activColor,
                                                         ),
                                                       ),
-                                                    );
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 8, right: 8),
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          borderRadius,
-                                                      border: Border.all(
+                                                      height: 30,
+                                                      width: 120,
+                                                      child: AppTextLarge(
+                                                        text: 'Raccordé',
+                                                        size: 16,
                                                         color: AppColors
                                                             .activColor,
                                                       ),
                                                     ),
-                                                    height: 30,
-                                                    width: 120,
-                                                    child: AppTextLarge(
-                                                      text: 'Raccordé',
-                                                      size: 16,
-                                                      color:
-                                                          AppColors.activColor,
-                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    } else if (enr == "biomasse") {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BiomaseSimilator(),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      } else if (enr == "biomasse") {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                BiomaseSimilator(),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        borderRadius: borderRadius,
+                                        border: Border.all(
+                                          color: AppColors.activColor,
                                         ),
-                                      );
-                                    }
-                                  },
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      borderRadius: borderRadius,
-                                      border: Border.all(
+                                      ),
+                                      height: 40,
+                                      child: AppTextLarge(
+                                        text: enr[0].toUpperCase() +
+                                            enr.substring(1),
+                                        size: 16,
                                         color: AppColors.activColor,
                                       ),
                                     ),
-                                    height: 40,
-                                    child: AppTextLarge(
-                                      text: enr[0].toUpperCase() +
-                                          enr.substring(1),
-                                      size: 16,
-                                      color: AppColors.activColor,
-                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        actions: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.only(left: 8, right: 8),
-                              height: 30,
-                              width: 80,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                color: AppColors.activColor,
-                                borderRadius: borderRadius,
-                              ),
-                              child: AppTextLarge(
-                                text: 'Fermer',
-                                size: 16,
-                                color: Theme.of(context).focusColor,
-                              ),
+                                );
+                              },
                             ),
                           ),
-                        ],
-                      );
-                    },
-                  );
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
-                child: Column(
-                  children: [
-                    Container(
-                      alignment: Alignment.topLeft,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: Theme.of(context).focusColor,
-                          border: isData
-                              ? Border.all(color: AppColors.activColor)
-                              : Border()),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: isData
-                            ? Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 10,
-                                        backgroundColor: AppColors.activColor,
-                                      ),
-                                      sizedbox2,
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 3),
-                                        child: Text(
-                                          simProvinces[index]['name'][0]
-                                                  .toUpperCase() +
-                                              simProvinces[index]['name']
-                                                  .substring(1),
-                                          style: TextStyle(
-                                              color:
-                                                  Theme.of(context).hintColor,
-                                              fontSize: 14,
-                                              fontFamily: 'Nunito',
-                                              letterSpacing: 0),
-                                          softWrap: false,
-                                          maxLines: 1,
-                                          overflow:
-                                              TextOverflow.ellipsis, // new
+                          actions: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(left: 8, right: 8),
+                                height: 30,
+                                width: 80,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: AppColors.activColor,
+                                  borderRadius: borderRadius,
+                                ),
+                                child: AppTextLarge(
+                                  text: 'Fermer',
+                                  size: 16,
+                                  color: Theme.of(context).focusColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.topLeft,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Theme.of(context).focusColor,
+                            border: isData
+                                ? Border.all(color: AppColors.activColor)
+                                : Border()),
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: isData
+                              ? Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 10,
+                                          backgroundColor: AppColors.activColor,
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                  Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).canvasColor,
-                                      borderRadius: borderRadius,
+                                        sizedbox2,
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 3),
+                                          child: Text(
+                                            simProvincesAll['name'][0]
+                                                    .toUpperCase() +
+                                                simProvincesAll['name']
+                                                    .substring(1),
+                                            style: TextStyle(
+                                                color:
+                                                    Theme.of(context).hintColor,
+                                                fontSize: 14,
+                                                fontFamily: 'Nunito',
+                                                letterSpacing: 0),
+                                            softWrap: false,
+                                            maxLines: 1,
+                                            overflow:
+                                                TextOverflow.ellipsis, // new
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    child: Icon(
-                                      CupertinoIcons
-                                          .rectangle_fill_on_rectangle_fill,
-                                      color: Theme.of(context)
-                                          .unselectedWidgetColor,
-                                      size: 20,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                   width: 200,
-                                    height: 30,
-                                    alignment: Alignment.centerLeft,
-                                    decoration: BoxDecoration(
-                                      borderRadius: borderRadius,
-                                      color: Theme.of(context).hoverColor,
-                                    ),
-                                    child: Container(
-                                      height: 20,
-                                      width: 20,
+                                    Container(
+                                      height: 30,
+                                      width: 30,
                                       decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: Theme.of(context).hintColor,
-                                        border: Border.all(
-                                          color: Theme.of(context).backgroundColor,
-                                          width: 2,
+                                        color: Theme.of(context).canvasColor,
+                                        borderRadius: borderRadius,
+                                      ),
+                                      child: Icon(
+                                        CupertinoIcons
+                                            .rectangle_fill_on_rectangle_fill,
+                                        color: Theme.of(context)
+                                            .unselectedWidgetColor,
+                                        size: 20,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                      width: 200,
+                                      height: 30,
+                                      alignment: Alignment.centerLeft,
+                                      decoration: BoxDecoration(
+                                        borderRadius: borderRadius,
+                                        color: Theme.of(context).hoverColor,
+                                      ),
+                                      child: Container(
+                                        height: 20,
+                                        width: 20,
+                                        decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Theme.of(context).hintColor,
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                .backgroundColor,
+                                            width: 2,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                Container(
-                                  height: 30,
-                                  width: 30,
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).canvasColor,
-                                    borderRadius: borderRadius,
-                                  ),
+                                    Container(
+                                      height: 30,
+                                      width: 30,
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).canvasColor,
+                                        borderRadius: borderRadius,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         ),
-      ),
-    ]);
+      ],
+    );
   }
 }
